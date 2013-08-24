@@ -46,6 +46,8 @@ public class InGameState extends GameState {
 
 	}
 
+	Vector2 lastIntersection;
+
 	@Override
 	public GameState created(){
 		world = new World(new Vector2(0, -9.1f), false);
@@ -59,17 +61,22 @@ public class InGameState extends GameState {
 		ground.createFixture(ps, 0);
 
 		for(int i=0;i<600;i++){
+			Vector2 rayStart = new Vector2(MathUtils.random(0, 200), 400);
+			Vector2 rayEnd = new Vector2(MathUtils.random(0, 200), -200);
+
+			final Vector2 delta = rayEnd.cpy().sub(rayStart).nor();
+
 			world.rayCast(new RayCastCallback(){
 
 				@Override
 				public float reportRayFixture(Fixture fixture, Vector2 point,
 						Vector2 normal, float fraction) {
 					float size = MathUtils.random(2, 5);
-					addPebble(point.cpy().add(normal.cpy().scl(size)), size);
+					addPebble(point.cpy().add(delta.scl(size)), size);
 					System.out.println(point);
 					return 0;
 				}
-			}, new Vector2(MathUtils.random(0, 200), 400), new Vector2(MathUtils.random(0, 200), -200));
+			}, rayStart, rayEnd);
 		}
 
 		camera = new OrthographicCamera(1,1);
