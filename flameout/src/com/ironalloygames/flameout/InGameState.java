@@ -20,7 +20,7 @@ public class InGameState extends GameState {
 	public OrthographicCamera uiCamera;
 
 	public int ticksToRun = 60;
-	int ticksRun = (86400 * 67 + 39584) * 60;
+	int ticksRun = (86400 * 18 + 39584) * 60;
 
 	Lander lander;
 
@@ -52,7 +52,7 @@ public class InGameState extends GameState {
 
 	@Override
 	public GameState created(){
-		world = new World(new Vector2(0, -9.1f), false);
+		world = new World(new Vector2(0, -5.4f), false);
 
 		BodyDef bd = new BodyDef();
 		ground = world.createBody(bd);
@@ -151,8 +151,7 @@ public class InGameState extends GameState {
 		sb.append("Mission Time: " + (ticksRun / 60 / 60 / 60 / 24 / 30) + ":" + (ticksRun / 60 / 60 / 60 / 24) % 30 + ":" + (ticksRun / 60 / 60 / 60) % 24 + ":" + (ticksRun / 60 / 60) % 60 + ":" + (ticksRun / 60) % 60 + "\n\n");
 
 		sb.append("Vel: (" + nf.format(lander.body.getLinearVelocity().x) + ", " + nf.format(lander.body.getLinearVelocity().x) + ") m/s\n");
-		sb.append("Vel in 1s: (" + nf.format(lander.ghost1Velocity.x) + ", " + nf.format(lander.ghost1Velocity.x) + ") m/s\n");
-		sb.append("Vel in 2s: (" + nf.format(lander.ghost2Velocity.x) + ", " + nf.format(lander.ghost2Velocity.x) + ") m/s\n");
+		sb.append("Vel +1s: (" + nf.format(lander.ghost1Velocity.x) + ", " + nf.format(lander.ghost1Velocity.x) + ") m/s\n");
 		sb.append("Gravity: " + nf.format(world.getGravity().y) + "m/s/s\n");
 
 		sb.append("\nThruster: " + (int)(lander.thrusterPower.x*100) + "%, " + (int)(lander.thrusterPower.y*100) + "%\n");
