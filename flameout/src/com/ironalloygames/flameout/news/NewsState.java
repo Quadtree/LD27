@@ -81,7 +81,9 @@ public class NewsState extends GameState {
 
 		regular.drawWrapped(batch, leadingStory.text, -255, 95, 230);
 
-		regular.drawWrapped(batch, secondStory.text, -20, -100, 270);
+		drawTextCentered(subheadline, secondStory.headline, -20 + (270 / 2), -90, 270);
+
+		regular.drawWrapped(batch, secondStory.text, -20, -150, 270);
 
 		batch.draw(leadingStory.image, -20, 95 - 178, 267, 178);
 
