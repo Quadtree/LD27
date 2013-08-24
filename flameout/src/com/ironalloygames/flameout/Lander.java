@@ -10,10 +10,10 @@ import com.badlogic.gdx.math.Vector2;
 public class Lander extends Actor {
 
 	enum Subsystem {
-		THRUSTER (0, "Thruster", "Thruster power is reduced by 70%. ", "Thrusters no longer function."),
-		ENGINE (1, "Engine", "Main engine power is reduced by 70%.", "The engine no longer functions."),
+		THRUSTER (0, "Thruster", "Thruster power is reduced by 50%. ", "Thrusters no longer function."),
+		ENGINE (1, "Engine", "Main engine power is reduced by 50%.", "The engine no longer functions."),
 		COMMS (2, "Comms", "No loss.", "The lander becomes permenantly uncontrollable."),
-		CONTROL (3, "Control", "50% chance control inputs are randomly modified.", "Control inputs are always randomly modified."),
+		CONTROL (3, "Control", "Random uncommanded actions.", "Strong random uncommanded actions."),
 		LEGS (4, "Legs", "Legs come down.", "No further effect."),
 		FUEL (5, "Fuel", "10% of fuel wasted per second.", "20% of fuel wasted per second.");
 
@@ -88,7 +88,7 @@ public class Lander extends Actor {
 			subsystemStatus.put(sub, 0);
 		}
 
-		subsystemStatus.put(Subsystem.FUEL, 2);
+		subsystemStatus.put(Subsystem.COMMS, 2);
 
 		body.setTransform(new Vector2(100 * (4.f / 7.f),110 * (4.f / 7.f)), -0.5f);
 		body.setLinearVelocity(-6, 6);
@@ -143,10 +143,10 @@ public class Lander extends Actor {
 
 	protected void applyEngineForce(){
 		body.applyLinearImpulse(new Vector2(
-				MathUtils.cos(body.getAngle() + MathUtils.PI / 2) * thrusterPower.y * THRUSTER_MOD * body.getMass(),
-				MathUtils.sin(body.getAngle() + MathUtils.PI / 2) * thrusterPower.y * THRUSTER_MOD * body.getMass()),
+				MathUtils.cos(body.getAngle() + MathUtils.PI / 2) * thrusterPower.y * THRUSTER_MOD * body.getMass() * (1 - (subsystemStatus.get(Subsystem.ENGINE) * 0.5f)),
+				MathUtils.sin(body.getAngle() + MathUtils.PI / 2) * thrusterPower.y * THRUSTER_MOD * body.getMass() * (1 - (subsystemStatus.get(Subsystem.ENGINE) * 0.5f))),
 				body.getWorldCenter(), true);
 
-		body.applyAngularImpulse(thrusterPower.x * TURN_MOD, true);
+		body.applyAngularImpulse(thrusterPower.x * TURN_MOD * (1 - (subsystemStatus.get(Subsystem.THRUSTER) * 0.5f)), true);
 	}
 }

@@ -112,6 +112,8 @@ public class InGameState extends GameState {
 
 	@Override
 	public void update() {
+		if(lander.subsystemStatus.get(Lander.Subsystem.COMMS) == 2) ticksToRun = 10;
+
 		if(ticksToRun == 1){
 			lander.rebuildGhostPositions();
 		}
