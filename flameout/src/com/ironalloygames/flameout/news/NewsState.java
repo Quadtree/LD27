@@ -55,7 +55,7 @@ public class NewsState extends GameState {
 			background = new Texture(Gdx.files.internal("newspaper-background.png"));
 		}
 
-		newspaperName = "The " + rStr(new String[]{"Daily", "Weekly", "Valiant", "Worldwide"}) + " " + rStr(new String[]{"Herald", "Devastator", "Truthifier", "Chronicle"});
+		newspaperName = "The " + rStr(new String[]{"Daily", "Weekly", "Valiant", "Worldwide"}) + " " + rStr(new String[]{"Herald", "Devastator", "Truthifier", "Chronicle", "Surprise", "Ambush"});
 
 		System.out.println("Newspaper: " + leadingStory + " " + secondStory);
 	}
@@ -77,9 +77,13 @@ public class NewsState extends GameState {
 
 		drawTextCentered(subheadline, leadingStory.subheadline, 0, 175, 544);
 
-		drawTextCentered(regular, leadingStory.text, -155, 95, 175);
+		regular.setColor(Color.BLACK);
 
-		drawTextCentered(regular, secondStory.text, 60, -100, 200);
+		regular.drawWrapped(batch, leadingStory.text, -255, 95, 230);
+
+		regular.drawWrapped(batch, secondStory.text, -20, -100, 270);
+
+		batch.draw(leadingStory.image, -20, 95 - 178, 267, 178);
 
 		batch.end();
 	}
