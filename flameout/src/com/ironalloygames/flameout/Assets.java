@@ -24,6 +24,8 @@ public class Assets {
 
 	public static Sprite controller;
 
+	public static Sprite controllerHighlighted;
+
 	public static void load(){
 		atlas = new TextureAtlas(Gdx.files.internal("atlas.atlas"));
 
@@ -42,6 +44,7 @@ public class Assets {
 		pebble = atlas.createSprite("pebble");
 		tooltip = atlas.createSprite("tooltip");
 		controller = atlas.createSprite("controller");
+		controllerHighlighted = atlas.createSprite("controller_glow");
 
 		mono13 = new BitmapFont(Gdx.files.internal("dsm-13-white.fnt"), Gdx.files.internal("dsm-13-white_00.png"), false);
 		mono16 = new BitmapFont(Gdx.files.internal("dsm-16-white.fnt"), Gdx.files.internal("dsm-16-white_00.png"), false);

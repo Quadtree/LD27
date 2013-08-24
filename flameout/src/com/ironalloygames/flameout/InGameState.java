@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Map.Entry;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Buttons;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -33,6 +34,8 @@ public class InGameState extends GameState {
 	Body ground = null;
 
 	int[] controllerPos = {3,4,5};
+
+	int controllerSelected = -1;
 
 	public void addPebble(Vector2 pos, float size){
 		Pebble p = new Pebble();
@@ -180,6 +183,10 @@ public class InGameState extends GameState {
 
 		int i = 0;
 
+		int ind = (Gdx.input.getY() - 180 + yMod) / 16;
+
+		int selCon = -1;
+
 		for(Entry<Subsystem, Integer> ent : lander.subsystemStatus.entrySet()){
 			for(int j=0;j<controllerPos.length;j++){
 				if(controllerPos[j] == ent.getKey().ind){
@@ -188,8 +195,17 @@ public class InGameState extends GameState {
 					case 1: batch.setColor(Color.GREEN); break;
 					case 2: batch.setColor(Color.BLUE); break;
 					}
-					batch.draw(Assets.controller, 156, 123 - ((i + 1) * 16) + yMod, 32, 16);
-					batch.setColor(Color.WHITE);
+
+					if(controllerSelected != j){
+
+						if(controllerSelected == -1 && ent.getKey().ind == ind){
+							batch.draw(Assets.controllerHighlighted, 156, 123 - ((i + 1) * 16) + yMod, 32, 16);
+							selCon = j;
+						}else
+							batch.draw(Assets.controller, 156, 123 - ((i + 1) * 16) + yMod, 32, 16);
+
+						batch.setColor(Color.WHITE);
+					}
 				}
 			}
 
@@ -199,27 +215,70 @@ public class InGameState extends GameState {
 			Assets.mono13.setColor(Color.WHITE);
 		}
 
-		int ind = (Gdx.input.getY() - 180 + yMod) / 16;
 
-		if (Gdx.input.getX() > 190 + 400 && ind >= 0 && ind < Lander.Subsystem.values().length){
-			int tlx = (Gdx.input.getX() - 400);
-			int tly = (300 - Gdx.input.getY());
 
-			batch.draw(Assets.tooltip, tlx, tly - 190, 150, 190);
+		if (controllerSelected == -1){
+			if(selCon != -1 && Gdx.input.isButtonPressed(Buttons.LEFT)){
+				controllerSelected = selCon;
+			} else {
 
-			Assets.mono16.draw(batch, Lander.Subsystem.values()[ind].name, tlx + 10, tly - 10);
+				if (Gdx.input.getX() > 190 + 400 && ind >= 0 && ind < Lander.Subsystem.values().length){
+					int tlx = (Gdx.input.getX() - 400);
+					int tly = (300 - Gdx.input.getY());
 
-			Assets.mono13.setColor(Color.YELLOW);
-			Assets.mono13.drawWrapped(batch, "Yellow: " + Lander.Subsystem.values()[ind].descriptionAtYellow, tlx + 10, tly - 30, 130);
+					batch.draw(Assets.tooltip, tlx, tly - 190, 150, 190);
 
-			Assets.mono13.setColor(Color.RED);
-			Assets.mono13.drawWrapped(batch, "Red: " + Lander.Subsystem.values()[ind].descriptionAtRed, tlx + 10, tly - 110, 130);
+					Assets.mono16.draw(batch, Lander.Subsystem.values()[ind].name, tlx + 10, tly - 10);
 
-			Assets.mono13.setColor(Color.WHITE);
+					Assets.mono13.setColor(Color.YELLOW);
+					Assets.mono13.drawWrapped(batch, "Yellow: " + Lander.Subsystem.values()[ind].descriptionAtYellow, tlx + 10, tly - 30, 130);
+
+					Assets.mono13.setColor(Color.RED);
+					Assets.mono13.drawWrapped(batch, "Red: " + Lander.Subsystem.values()[ind].descriptionAtRed, tlx + 10, tly - 110, 130);
+
+					Assets.mono13.setColor(Color.WHITE);
+				}
+
+				if (Gdx.input.getX() > 160 + 400 && Gdx.input.getX() < 190 + 400 && ind >= 0 && ind < Lander.Subsystem.values().length){
+					for(int j=0;j<controllerPos.length;j++){
+						if(controllerPos[j] == ind){
+
+						}
+					}
+				}
+			}
+		} else {
+			if(Gdx.input.isButtonPressed(Buttons.RIGHT)){
+				controllerSelected = -1;
+			} else if(Gdx.input.isButtonPressed(Buttons.LEFT)){
+				if(ind >= 0 && ind < lander.subsystemStatus.size()){
+					if(controllerPos[controllerSelected] != ind){
+						controllerPos[controllerSelected] = ind;
+						controllerSelected = -1;
+					}
+				}
+			} else {
+				int tlx = (Gdx.input.getX() - 400);
+				int tly = (300 - Gdx.input.getY());
+
+				switch(controllerSelected){
+				case 0: batch.setColor(Color.RED); break;
+				case 1: batch.setColor(Color.GREEN); break;
+				case 2: batch.setColor(Color.BLUE); break;
+				}
+
+				batch.draw(Assets.controllerHighlighted, tlx - 16, tly - 8, 32, 16);
+
+				batch.setColor(Color.WHITE);
+			}
 		}
+
+		if(!Gdx.input.isButtonPressed(Buttons.LEFT)) mouseHasBeenUp = true;
 
 		batch.end();
 	}
+
+	boolean mouseHasBeenUp = true;
 
 	@Override
 	public boolean keyDown(int keycode) {
