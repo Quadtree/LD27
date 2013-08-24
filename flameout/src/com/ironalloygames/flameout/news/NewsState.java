@@ -77,6 +77,10 @@ public class NewsState extends GameState {
 
 		drawTextCentered(subheadline, leadingStory.subheadline, 0, 175, 544);
 
+		drawTextCentered(regular, leadingStory.text, -155, 95, 175);
+
+		drawTextCentered(regular, secondStory.text, 60, -100, 200);
+
 		batch.end();
 	}
 
