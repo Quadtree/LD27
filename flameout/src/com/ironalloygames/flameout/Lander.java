@@ -35,17 +35,17 @@ public class Lander extends Actor {
 
 		state.batch.draw(
 				graphics.get(graphics.size() - 1), body.getPosition().x, body.getPosition().y,
-				0.5f, 0.5f, 1, 1, getHalfSize() * 3, getHalfSize() * 3, body.getAngle() * (180 / MathUtils.PI) - 90, false
+				0.5f, 0.5f, 1, 1, getHalfSize() * 2, getHalfSize() * 2, body.getAngle() * (180 / MathUtils.PI) - 90, false
 				);
 
 		state.batch.draw(
 				Assets.landerOutline, ghost1Pos.x, ghost1Pos.y,
-				0.5f, 0.5f, 1, 1, getHalfSize() * 3, getHalfSize() * 3, ghost1Angle * (180 / MathUtils.PI) - 90, false
+				0.5f, 0.5f, 1, 1, getHalfSize() * 2, getHalfSize() * 2, ghost1Angle * (180 / MathUtils.PI) - 90, false
 				);
 
 		state.batch.draw(
 				Assets.landerOutline, ghost2Pos.x, ghost2Pos.y,
-				0.5f, 0.5f, 1, 1, getHalfSize() * 3, getHalfSize() * 3, ghost2Angle * (180 / MathUtils.PI) - 90, false
+				0.5f, 0.5f, 1, 1, getHalfSize() * 2, getHalfSize() * 2, ghost2Angle * (180 / MathUtils.PI) - 90, false
 				);
 
 

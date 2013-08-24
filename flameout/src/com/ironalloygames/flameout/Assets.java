@@ -17,6 +17,8 @@ public class Assets {
 
 	public static BitmapFont mono13;
 
+	public static Sprite pebble;
+
 	public static void load(){
 		atlas = new TextureAtlas(Gdx.files.internal("atlas.atlas"));
 
@@ -31,6 +33,8 @@ public class Assets {
 		}
 
 		landerOutline = atlas.createSprite("lander_outline");
+
+		pebble = atlas.createSprite("pebble");
 
 		mono13 = new BitmapFont(Gdx.files.internal("dsm-13-white.fnt"), Gdx.files.internal("dsm-13-white_00.png"), false);
 

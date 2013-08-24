@@ -9,7 +9,7 @@ public abstract class Actor {
 	protected GameState state;
 
 	protected float getHalfSize(){
-		return 3;
+		return 4;
 	}
 
 	public Actor created(GameState state){

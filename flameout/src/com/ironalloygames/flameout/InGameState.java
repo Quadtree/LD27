@@ -1,10 +1,15 @@
 package com.ironalloygames.flameout;
 
 import java.text.NumberFormat;
+import java.util.ArrayList;
 
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 
@@ -16,6 +21,28 @@ public class InGameState extends GameState {
 	int ticksRun = (86400 * 67 + 39584) * 60;
 
 	Lander lander;
+
+	ArrayList<Pebble> pebbles = new ArrayList<Pebble>();
+
+	Body ground = null;
+
+	public void addPebble(Vector2 pos, float size){
+		Pebble p = new Pebble();
+		p.pos = pos.cpy();
+		p.size = size;
+		pebbles.add(p);
+
+		if(ground == null){
+			BodyDef bd = new BodyDef();
+			ground = world.createBody(bd);
+		}
+
+		CircleShape cs = new CircleShape();
+		cs.setPosition(pos);
+		cs.setRadius(size);
+
+		ground.createFixture(cs, 0);
+	}
 
 	public InGameState(){
 
@@ -30,6 +57,9 @@ public class InGameState extends GameState {
 		actors.add(lander);
 
 		uiCamera = new OrthographicCamera(800,600);
+
+		for(int i=0;i<100;i++)
+			addPebble(new Vector2(MathUtils.random(0, 100), 5), 2);
 
 		return super.created();
 	}
@@ -63,6 +93,10 @@ public class InGameState extends GameState {
 		batch.begin();
 
 		super.render();
+
+		for(Pebble p : pebbles){
+			batch.draw(Assets.pebble, p.pos.x, p.pos.y, p.size * 2, p.size * 2);
+		}
 
 		batch.end();
 
