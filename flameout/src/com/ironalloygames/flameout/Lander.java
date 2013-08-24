@@ -2,6 +2,7 @@ package com.ironalloygames.flameout;
 
 import java.util.EnumMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
@@ -37,6 +38,8 @@ public class Lander extends Actor {
 	float ghost1Angle = 0;
 	float ghost2Angle = 0;
 
+	int curLegStatus = 60;
+
 	public float fuel = 10;
 
 	public Vector2 ghost1Velocity = new Vector2();
@@ -47,6 +50,8 @@ public class Lander extends Actor {
 	public Vector2 actualThrusterPower = new Vector2();
 
 	public EnumMap<Subsystem, Integer> subsystemStatus = new EnumMap<Subsystem, Integer>(Subsystem.class);
+
+	public boolean commandedLegPosition = true;
 
 	@Override
 	public void render() {
@@ -63,7 +68,7 @@ public class Lander extends Actor {
 		}
 
 		state.batch.draw(
-				graphics.get(graphics.size() - 1), body.getPosition().x, body.getPosition().y,
+				graphics.get(curLegStatus / 8), body.getPosition().x, body.getPosition().y,
 				0.5f, 0.5f, 1, 1, getHalfSize() * 2, getHalfSize() * 2, body.getAngle() * (180 / MathUtils.PI) - 90, false
 				);
 
@@ -88,8 +93,6 @@ public class Lander extends Actor {
 			subsystemStatus.put(sub, 0);
 		}
 
-		subsystemStatus.put(Subsystem.COMMS, 2);
-
 		body.setTransform(new Vector2(100 * (4.f / 7.f),110 * (4.f / 7.f)), -0.5f);
 		body.setLinearVelocity(-6, 6);
 
@@ -107,6 +110,35 @@ public class Lander extends Actor {
 		fuel -= thrusterPower.y / 60 * 2;
 
 		fuel *= 1 - ((subsystemStatus.get(Subsystem.FUEL) * 0.1f) / 60);
+
+		if (MathUtils.randomBoolean(0.05f)){
+
+			float variation = 0;
+
+			if (subsystemStatus.get(Subsystem.CONTROL) == 1) variation = 0.1f;
+			if (subsystemStatus.get(Subsystem.CONTROL) == 2) variation = 0.5f;
+
+			thrusterPower.x = MathUtils.clamp(thrusterPower.x + MathUtils.random(-variation, variation), -1, 1);
+			thrusterPower.y = MathUtils.clamp(thrusterPower.y + MathUtils.random(-variation, variation), 0, 1);
+		}
+
+		boolean legPosition = commandedLegPosition;
+
+		if(subsystemStatus.get(Subsystem.LEGS) != 0) legPosition = false;
+
+		if (!legPosition){
+			if(curLegStatus > 0) curLegStatus--;
+		} else {
+			if(curLegStatus < 59) curLegStatus++;
+		}
+
+		for(Entry<Subsystem, Integer> ent : subsystemStatus.entrySet()){
+			if(state.canSubsystemBreak(ent.getKey()) && MathUtils.randomBoolean(0.15f / 60) && ent.getValue() < 2){
+				ent.setValue(ent.getValue() + 1);
+			}
+		}
+
+		if(fuel <= 0){ fuel = 0; actualThrusterPower.set(0,0); thrusterPower.set(0,0); }
 
 		super.update();
 	}

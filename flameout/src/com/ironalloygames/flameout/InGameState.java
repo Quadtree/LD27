@@ -238,5 +238,14 @@ public class InGameState extends GameState {
 		return super.keyUp(keycode);
 	}
 
+	@Override
+	public boolean canSubsystemBreak(Subsystem sub) {
+		for(int ts : controllerPos){
+			if(ts == sub.ind) return false;
+		}
+
+		return true;
+	}
+
 
 }

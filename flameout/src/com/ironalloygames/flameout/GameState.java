@@ -11,6 +11,8 @@ public class GameState implements InputProcessor {
 	public World world;
 	public SpriteBatch batch;
 
+	public boolean canSubsystemBreak(Lander.Subsystem sub){ return false; }
+
 	public GameState created(){
 		batch = new SpriteBatch();
 		return this;
