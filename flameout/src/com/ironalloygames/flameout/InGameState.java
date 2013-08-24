@@ -2,6 +2,7 @@ package com.ironalloygames.flameout;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Map.Entry;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
 import com.badlogic.gdx.physics.box2d.World;
+import com.ironalloygames.flameout.Lander.Subsystem;
 
 
 public class InGameState extends GameState {
@@ -165,9 +167,19 @@ public class InGameState extends GameState {
 
 		sb.append("\nThruster: " + (int)(lander.thrusterPower.x*100) + "%, " + (int)(lander.thrusterPower.y*100) + "%\n");
 
-
-
 		Assets.mono13.drawMultiLine(batch, sb, 160, 250);
+
+		int i = 0;
+
+		for(Entry<Subsystem, Integer> ent : lander.subsystemStatus.entrySet()){
+			Assets.mono13.draw(batch, ent.getKey().name, 190, 120 + -(i++ * 16));
+		}
+
+		int ind = ((Gdx.input.getY()) - 180) / 16;
+
+		if (Gdx.input.getX() > 190 && ind >= 0 && ind < Lander.Subsystem.values().length){
+			System.out.println(ind);
+		}
 
 		batch.end();
 	}

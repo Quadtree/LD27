@@ -185,3 +185,10 @@ pebble
   orig: 64, 64
   offset: 0, 0
   index: -1
+tooltip
+  rotate: false
+  xy: 652, 755
+  size: 25, 25
+  orig: 25, 25
+  offset: 0, 0
+  index: -1

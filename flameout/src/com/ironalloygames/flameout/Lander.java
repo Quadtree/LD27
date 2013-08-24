@@ -1,5 +1,6 @@
 package com.ironalloygames.flameout;
 
+import java.util.EnumMap;
 import java.util.List;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -9,19 +10,21 @@ import com.badlogic.gdx.math.Vector2;
 public class Lander extends Actor {
 
 	enum Subsystem {
-		THRUSTER ("Thruster", "At yellow, thruster power is reduced by 50%. At red, thrusters no longer function."),
-		ENGINE ("Engine", "At yellow, main engine power is reduced by 50%. At red, the engine no longer functions."),
-		COMMS ("Comms", "At yellow, no loss. At red, the lander becomes permenantly uncontrollable."),
-		CONTROL ("Control", "At yellow, 50% chance control inputs have no effect. At red, lander is uncontrollable."),
-		LEGS ("Legs", "At yellow, legs come down. No further effect at red."),
-		FUEL ("Fuel");
+		THRUSTER ("Thruster", "Thruster power is reduced by 50%. ", "Thrusters no longer function."),
+		ENGINE ("Engine", "Main engine power is reduced by 50%.", "The engine no longer functions."),
+		COMMS ("Comms", "No loss.", "The lander becomes permenantly uncontrollable."),
+		CONTROL ("Control", "50% chance control inputs are randomly modified.", "Control inputs are always randomly modified."),
+		LEGS ("Legs", "Legs come down.", "No further effect."),
+		FUEL ("Fuel", "5% of fuel wasted per second.", "10% of fuel wasted per second.");
 
 		public String name;
-		public String description;
+		public String descriptionAtYellow;
+		public String descriptionAtRed;
 
-		private Subsystem(String s, String desc){
+		private Subsystem(String s, String desc, String desc2){
 			name = s;
-			description = desc;
+			descriptionAtYellow = desc;
+			descriptionAtRed = desc2;
 		}
 	}
 
@@ -38,6 +41,8 @@ public class Lander extends Actor {
 	public Vector2 thrusterPower = new Vector2();
 
 	public Vector2 actualThrusterPower = new Vector2();
+
+	public EnumMap<Subsystem, Integer> subsystemStatus = new EnumMap<Subsystem, Integer>(Subsystem.class);
 
 	@Override
 	public void render() {
@@ -74,6 +79,10 @@ public class Lander extends Actor {
 	@Override
 	public Actor created(GameState state) {
 		super.created(state);
+
+		for(Subsystem sub : Subsystem.values()){
+			subsystemStatus.put(sub, 0);
+		}
 
 		body.setTransform(new Vector2(100 * (4.f / 7.f),110 * (4.f / 7.f)), -0.5f);
 		body.setLinearVelocity(-6, 6);
