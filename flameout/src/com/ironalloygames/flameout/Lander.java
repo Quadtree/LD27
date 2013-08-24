@@ -1,5 +1,8 @@
 package com.ironalloygames.flameout;
 
+import java.util.List;
+
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
@@ -14,12 +17,24 @@ public class Lander extends Actor {
 
 	public Vector2 thrusterPower = new Vector2();
 
+	public Vector2 actualThrusterPower = new Vector2();
+
 	@Override
 	public void render() {
 		super.render();
 
+		List<Sprite> graphics = null;
+
+		if (actualThrusterPower.y < 0.05f){
+			graphics = Assets.landerEngineOff;
+		} else if (actualThrusterPower.y > 0.75f){
+			graphics = Assets.landerEngineHigh;
+		} else {
+			graphics = Assets.landerEngineLow;
+		}
+
 		state.batch.draw(
-				Assets.landerEngineHigh.get(Assets.landerEngineHigh.size() - 1), body.getPosition().x, body.getPosition().y,
+				graphics.get(graphics.size() - 1), body.getPosition().x, body.getPosition().y,
 				0.5f, 0.5f, 1, 1, getHalfSize() * 3, getHalfSize() * 3, body.getAngle() * (180 / MathUtils.PI) - 90, false
 				);
 
@@ -51,6 +66,9 @@ public class Lander extends Actor {
 	@Override
 	public void update() {
 		this.applyEngineForce();
+
+		this.actualThrusterPower.set(thrusterPower);
+
 		super.update();
 	}
 
