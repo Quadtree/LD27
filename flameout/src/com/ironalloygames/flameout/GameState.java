@@ -4,9 +4,13 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class GameState implements InputProcessor {
+public class GameState implements InputProcessor, ContactListener {
 	public ArrayList<Actor> actors = new ArrayList<Actor>();
 	public World world;
 	public SpriteBatch batch;
@@ -78,5 +82,29 @@ public class GameState implements InputProcessor {
 	public boolean scrolled(int amount) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public void beginContact(Contact contact) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void endContact(Contact contact) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void preSolve(Contact contact, Manifold oldManifold) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void postSolve(Contact contact, ContactImpulse impulse) {
+		// TODO Auto-generated method stub
+
 	}
 }

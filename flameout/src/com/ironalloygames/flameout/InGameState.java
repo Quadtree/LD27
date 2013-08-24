@@ -13,6 +13,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
@@ -20,7 +22,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.ironalloygames.flameout.Lander.Subsystem;
 
 
-public class InGameState extends GameState {
+public class InGameState extends GameState implements ContactListener {
 	public OrthographicCamera camera;
 	public OrthographicCamera uiCamera;
 
@@ -62,6 +64,8 @@ public class InGameState extends GameState {
 	@Override
 	public GameState created(){
 		world = new World(new Vector2(0, -5.4f), false);
+
+		world.setContactListener(this);
 
 		BodyDef bd = new BodyDef();
 		ground = world.createBody(bd);
@@ -169,8 +173,8 @@ public class InGameState extends GameState {
 
 		sb.append(String.format("Mission Time: %02d:%02d:%02d:%02d:%02d\n", (ticksRun / 60 / 60 / 60 / 24 / 30), (ticksRun / 60 / 60 / 60 / 24) % 30, (ticksRun / 60 / 60 / 60) % 24, (ticksRun / 60 / 60) % 60, (ticksRun / 60) % 60));
 
-		sb.append("Vel: (" + nf.format(lander.body.getLinearVelocity().x) + ", " + nf.format(lander.body.getLinearVelocity().x) + ") m/s\n");
-		sb.append("Vel +1s: (" + nf.format(lander.ghost1Velocity.x) + ", " + nf.format(lander.ghost1Velocity.x) + ") m/s\n");
+		sb.append("Vel: " + nf.format(lander.body.getLinearVelocity().len()) + " (" + nf.format(lander.body.getLinearVelocity().x) + ", " + nf.format(lander.body.getLinearVelocity().y) + ") m/s\n");
+		sb.append("Vel +1s: " + nf.format(lander.ghost1Velocity.len()) + " (" + nf.format(lander.ghost1Velocity.x) + ", " + nf.format(lander.ghost1Velocity.y) + ") m/s\n");
 		sb.append("Gravity: " + nf.format(world.getGravity().y) + "m/s/s\n");
 
 		sb.append("\nEngines: " + (int)(lander.thrusterPower.x*100) + "%, " + (int)(lander.thrusterPower.y*100) + "%\n");
@@ -178,6 +182,14 @@ public class InGameState extends GameState {
 		sb.append("Fuel: " + nf.format(lander.fuel) + "s @ 50%\n");
 
 		Assets.mono13.drawMultiLine(batch, sb, 160, 250);
+
+		if (lander.maxGroundSpeed > 0){
+			if(Lander.getImpactResult(lander.maxGroundSpeed) == 0) Assets.mono13.setColor(Color.GREEN);
+			if(Lander.getImpactResult(lander.maxGroundSpeed) == 1) Assets.mono13.setColor(Color.YELLOW);
+			if(Lander.getImpactResult(lander.maxGroundSpeed) == 2) Assets.mono13.setColor(Color.RED);
+			Assets.mono13.draw(batch, "Est Contact Speed: " + nf.format(lander.maxGroundSpeed) + "m/s", 160, 145);
+			Assets.mono13.setColor(Color.WHITE);
+		}
 
 		int yMod = -50;
 
@@ -218,8 +230,9 @@ public class InGameState extends GameState {
 
 
 		if (controllerSelected == -1){
-			if(selCon != -1 && Gdx.input.isButtonPressed(Buttons.LEFT)){
+			if(selCon != -1 && Gdx.input.isButtonPressed(Buttons.LEFT) && mouseHasBeenUp){
 				controllerSelected = selCon;
+				mouseHasBeenUp = false;
 			} else {
 
 				if (Gdx.input.getX() > 190 + 400 && ind >= 0 && ind < Lander.Subsystem.values().length){
@@ -250,13 +263,20 @@ public class InGameState extends GameState {
 		} else {
 			if(Gdx.input.isButtonPressed(Buttons.RIGHT)){
 				controllerSelected = -1;
-			} else if(Gdx.input.isButtonPressed(Buttons.LEFT)){
+			} else if(Gdx.input.isButtonPressed(Buttons.LEFT) && mouseHasBeenUp){
 				if(ind >= 0 && ind < lander.subsystemStatus.size()){
-					if(controllerPos[controllerSelected] != ind){
-						controllerPos[controllerSelected] = ind;
-						controllerSelected = -1;
+
+					boolean occupied = false;
+
+					for(int ix : controllerPos){
+						if(ix == ind) occupied = true;
 					}
+
+					if(!occupied)
+						controllerPos[controllerSelected] = ind;
 				}
+				mouseHasBeenUp = false;
+				controllerSelected = -1;
 			} else {
 				int tlx = (Gdx.input.getX() - 400);
 				int tly = (300 - Gdx.input.getY());
@@ -304,6 +324,24 @@ public class InGameState extends GameState {
 		}
 
 		return true;
+	}
+
+	@Override
+	public void beginContact(Contact contact) {
+		if(contact.getFixtureA().getBody() == lander.body || contact.getFixtureB().getBody() == lander.body){
+			lander.contacts++;
+			System.out.println("Contacts " + lander.contacts);
+		}
+		super.beginContact(contact);
+	}
+
+	@Override
+	public void endContact(Contact contact) {
+		if(contact.getFixtureA().getBody() == lander.body || contact.getFixtureB().getBody() == lander.body){
+			lander.contacts--;
+			System.out.println("Contacts " + lander.contacts);
+		}
+		super.endContact(contact);
 	}
 
 

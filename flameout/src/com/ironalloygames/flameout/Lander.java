@@ -7,6 +7,10 @@ import java.util.Map.Entry;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Contact;
+import com.badlogic.gdx.physics.box2d.ContactImpulse;
+import com.badlogic.gdx.physics.box2d.ContactListener;
+import com.badlogic.gdx.physics.box2d.Manifold;
 
 public class Lander extends Actor {
 
@@ -52,6 +56,12 @@ public class Lander extends Actor {
 	public EnumMap<Subsystem, Integer> subsystemStatus = new EnumMap<Subsystem, Integer>(Subsystem.class);
 
 	public boolean commandedLegPosition = true;
+
+	public static int getImpactResult(float speed){
+		if(speed > 15) return 2;
+		if(speed > 4) return 1;
+		return 0;
+	}
 
 	@Override
 	public void render() {
@@ -101,6 +111,15 @@ public class Lander extends Actor {
 		return this;
 	}
 
+	public int getContacts(){
+		int con = 0;
+		for(Contact c : state.world.getContactList()){
+			if(c.getFixtureA().getBody() == body || c.getFixtureB().getBody() == body) con++;
+		}
+
+		return con;
+	}
+
 	@Override
 	public void update() {
 		this.applyEngineForce();
@@ -134,13 +153,37 @@ public class Lander extends Actor {
 
 		for(Entry<Subsystem, Integer> ent : subsystemStatus.entrySet()){
 			if(state.canSubsystemBreak(ent.getKey()) && MathUtils.randomBoolean(0.15f / 60) && ent.getValue() < 2){
-				ent.setValue(ent.getValue() + 1);
+				//ent.setValue(ent.getValue() + 1);
+			}
+			if(!state.canSubsystemBreak(ent.getKey()) && MathUtils.randomBoolean(0.3f / 60) && ent.getValue() > 0){
+				ent.setValue(ent.getValue() - 1);
 			}
 		}
 
 		if(fuel <= 0){ fuel = 0; actualThrusterPower.set(0,0); thrusterPower.set(0,0); }
 
+		if(contacts > 0){
+			groundCollision();
+		}
+
+		if (contacts > 0 && body.getLinearVelocity().len() < 0.01f){
+			System.out.println("Game over");
+		}
+
 		super.update();
+	}
+
+	int _sim_landed = 0;
+	public float maxGroundSpeed = -1;
+
+	int contacts = 0;
+
+	public boolean destroyed = true;
+	public boolean damaged = true;
+
+	public void groundCollision(){
+		if(Lander.getImpactResult(body.getLinearVelocity().len()) == 2) destroyed = true;
+		if(Lander.getImpactResult(body.getLinearVelocity().len()) == 1) damaged = true;
 	}
 
 	public void rebuildGhostPositions(){
@@ -149,7 +192,40 @@ public class Lander extends Actor {
 		Vector2 linVel = body.getLinearVelocity().cpy();
 		float angVel = body.getAngularVelocity();
 
+		maxGroundSpeed = -1;
+
+		_sim_landed = contacts;
+
+		state.world.setContactListener(new ContactListener(){
+
+			@Override
+			public void beginContact(Contact contact) {
+				_sim_landed++;
+				maxGroundSpeed = Math.max(maxGroundSpeed, body.getLinearVelocity().len());
+			}
+
+			@Override
+			public void endContact(Contact contact) {
+				_sim_landed--;
+			}
+
+			@Override
+			public void preSolve(Contact contact, Manifold oldManifold) {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void postSolve(Contact contact, ContactImpulse impulse) {
+				// TODO Auto-generated method stub
+
+			}
+		});
+
 		for(int i=0;i<60;i++){
+
+			if(_sim_landed > 0) maxGroundSpeed = Math.max(maxGroundSpeed, body.getLinearVelocity().len());
+
 			this.applyEngineForce();
 			state.world.step(0.016f, 1, 1);
 		}
@@ -160,6 +236,8 @@ public class Lander extends Actor {
 		ghost1Velocity = body.getLinearVelocity().cpy();
 
 		for(int i=0;i<60;i++){
+			if(_sim_landed > 0) maxGroundSpeed = Math.max(maxGroundSpeed, body.getLinearVelocity().len());
+
 			state.world.step(0.016f, 1, 1);
 		}
 
@@ -171,6 +249,8 @@ public class Lander extends Actor {
 		body.setTransform(pos, ang);
 		body.setLinearVelocity(linVel);
 		body.setAngularVelocity(angVel);
+
+		state.world.setContactListener(state);
 	}
 
 	protected void applyEngineForce(){
