@@ -5,7 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Lander extends Actor {
 
-	private static final float THRUSTER_MOD = 0.5f;
+	private static final float THRUSTER_MOD = 0.7f;
+	private static final float TURN_MOD = 3.0f;
 	Vector2 ghost1Pos = null;
 	Vector2 ghost2Pos = null;
 	float ghost1Angle = 0;
@@ -40,7 +41,7 @@ public class Lander extends Actor {
 		super.created(state);
 
 		body.setTransform(new Vector2(100 * (4.f / 7.f),110 * (4.f / 7.f)), -0.5f);
-		body.setLinearVelocity(-6, 22);
+		body.setLinearVelocity(-6, 6);
 
 		this.rebuildGhostPositions();
 
@@ -54,8 +55,12 @@ public class Lander extends Actor {
 	}
 
 	public void rebuildGhostPositions(){
+		System.out.println("REBUILDING");
+
 		Vector2 pos = body.getPosition().cpy();
 		float ang = body.getAngle();
+		Vector2 linVel = body.getLinearVelocity().cpy();
+		float angVel = body.getAngularVelocity();
 
 		for(int i=0;i<60;i++){
 			this.applyEngineForce();
@@ -73,9 +78,16 @@ public class Lander extends Actor {
 		ghost2Angle = body.getAngle();
 
 		body.setTransform(pos, ang);
+		body.setLinearVelocity(linVel);
+		body.setAngularVelocity(angVel);
 	}
 
 	protected void applyEngineForce(){
-		body.applyLinearImpulse(new Vector2(MathUtils.cos(body.getAngle()) * thrusterPower.y * THRUSTER_MOD, MathUtils.sin(body.getAngle()) * thrusterPower.y * THRUSTER_MOD), new Vector2(0,0), true);
+		body.applyLinearImpulse(new Vector2(
+				MathUtils.cos(body.getAngle() + MathUtils.PI / 2) * thrusterPower.y * THRUSTER_MOD * body.getMass(),
+				MathUtils.sin(body.getAngle() + MathUtils.PI / 2) * thrusterPower.y * THRUSTER_MOD * body.getMass()),
+				body.getWorldCenter(), true);
+
+		body.applyAngularImpulse(thrusterPower.x * TURN_MOD, true);
 	}
 }
