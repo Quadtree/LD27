@@ -16,13 +16,13 @@ public abstract class NewsStory {
 
 	Random rand = new Random();
 
+	public String headline = "", subheadline = "", text = "";
+
+	public Sprite image;
+
+	public Set<Tag> tags = new HashSet<Tag>();
+
 	protected String rStr(String[] options){
 		return options[rand.nextInt(options.length)];
 	}
-
-	public String getHeadline(){ return ""; }
-	public String getSubheadline(){ return ""; }
-	public String getText(){ return ""; }
-	public Sprite getImage(){ return null; }
-	public Set<Tag> getTags(){ return new HashSet<Tag>(); }
 }

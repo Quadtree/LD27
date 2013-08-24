@@ -34,7 +34,7 @@ public class NewsState extends GameState {
 		int n = 1;
 
 		for(NewsStory ns : stories){
-			if(ns.getTags().contains(leadingStoryTag) && rand.nextInt(n++) == 0){
+			if(ns.tags.contains(leadingStoryTag) && rand.nextInt(n++) == 0){
 				leadingStory = ns;
 			}
 		}
@@ -42,7 +42,7 @@ public class NewsState extends GameState {
 		n = 1;
 
 		for(NewsStory ns : stories){
-			if(ns.getTags().contains(Tag.FLUFF) && rand.nextInt(n++) == 0){
+			if(ns.tags.contains(Tag.FLUFF) && rand.nextInt(n++) == 0){
 				secondStory = ns;
 			}
 		}
@@ -71,16 +71,18 @@ public class NewsState extends GameState {
 		batch.draw(background, -background.getWidth() / 2, -background.getHeight() / 2);
 
 
-		drawTextCentered(subheadline, newspaperName, 0, 263);
+		drawTextCentered(subheadline, newspaperName, 0, 263, 544);
 
-		drawTextCentered(headline, leadingStory.getHeadline(), 0, 230);
+		drawTextCentered(headline, leadingStory.headline, 0, 230, 544);
+
+		drawTextCentered(subheadline, leadingStory.subheadline, 0, 175, 544);
 
 		batch.end();
 	}
 
-	void drawTextCentered(BitmapFont font, String s, int x, int y){
+	void drawTextCentered(BitmapFont font, String s, int x, int y, int wrapWidth){
 		font.setColor(Color.BLACK);
-		font.draw(batch, s, x - font.getBounds(s).width / 2, y);
+		font.drawWrapped(batch, s, x - font.getWrappedBounds(s, wrapWidth).width / 2, y, wrapWidth);
 	}
 
 

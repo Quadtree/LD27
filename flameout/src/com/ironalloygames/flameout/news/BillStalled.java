@@ -1,7 +1,5 @@
 package com.ironalloygames.flameout.news;
 
-import java.util.HashSet;
-import java.util.Set;
 
 public class BillStalled extends NewsStory {
 
@@ -9,16 +7,10 @@ public class BillStalled extends NewsStory {
 
 	public BillStalled(){
 		house = rStr(new String[]{"Congress", "Parlament", "the Dread Council"});
-	}
 
-	@Override
-	public String getHeadline() {
-		return "Bill Stalled in " + house;
-	}
+		headline = "Bill Stalled in " + house;
 
-	@Override
-	public String getText() {
-		return "Today the bill to " + rStr(new String[]{
+		text = "Today the bill to " + rStr(new String[]{
 				"ban the sale of " + rStr(new String[]{
 						"tortoises",
 						"grapefruit",
@@ -40,13 +32,8 @@ public class BillStalled extends NewsStory {
 				"was crushed",
 				"fell apart"
 		}) + " when it failed a crucial vote. The bill has come under criticism from ...";
-	}
 
-	@Override
-	public Set<Tag> getTags() {
-		HashSet<Tag> tags = new HashSet<Tag>();
 		tags.add(Tag.FLUFF);
-		return tags;
 	}
 
 }
