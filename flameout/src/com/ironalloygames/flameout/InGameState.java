@@ -9,7 +9,6 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
@@ -35,11 +34,14 @@ public class InGameState extends GameState {
 		p.size = size;
 		pebbles.add(p);
 
-		CircleShape cs = new CircleShape();
-		cs.setPosition(pos);
-		cs.setRadius(size);
+		//CircleShape cs = new CircleShape();
+		//cs.setPosition(pos.cpy());
+		//cs.setRadius(size);
 
-		ground.createFixture(cs, 0);
+		PolygonShape ps = new PolygonShape();
+		ps.setAsBox(size, size, pos.cpy(), 0);
+
+		ground.createFixture(ps, 0);
 	}
 
 	public InGameState(){
@@ -60,23 +62,35 @@ public class InGameState extends GameState {
 
 		ground.createFixture(ps, 0);
 
-		for(int i=0;i<600;i++){
-			Vector2 rayStart = new Vector2(MathUtils.random(0, 200), 400);
-			Vector2 rayEnd = new Vector2(MathUtils.random(0, 200), -200);
+		for(int i=0;i<400;i++){
+			Vector2 rayStart;
 
-			final Vector2 delta = rayEnd.cpy().sub(rayStart).nor();
+			if (MathUtils.randomBoolean())
+				rayStart = new Vector2(0,50 * (4.f / 7.f));
+			else
+				rayStart = new Vector2(200 * (4.f / 7.f),50 * (4.f / 7.f));
+
+			Vector2 rayEnd = new Vector2(MathUtils.random(0, 200), -6);
+
+			Vector2 delta = rayEnd.cpy().sub(rayStart).nor();
+
+			System.out.println(delta);
 
 			world.rayCast(new RayCastCallback(){
 
 				@Override
 				public float reportRayFixture(Fixture fixture, Vector2 point,
 						Vector2 normal, float fraction) {
-					float size = MathUtils.random(2, 5);
-					addPebble(point.cpy().add(delta.scl(size)), size);
-					System.out.println(point);
-					return 0;
+					lastIntersection = point;
+					return fraction;
 				}
 			}, rayStart, rayEnd);
+
+			float size = MathUtils.random(0.7f, 1.5f);
+
+			System.out.println("PICK'D " + lastIntersection);
+
+			addPebble(lastIntersection.cpy().add(delta.scl(-size)), size);
 		}
 
 		camera = new OrthographicCamera(1,1);
@@ -102,8 +116,8 @@ public class InGameState extends GameState {
 			ticksRun++;
 		}
 
-		if (increaseThrust) lander.thrusterPower.y = Math.min(lander.thrusterPower.y + 0.04f, 1);
-		if (decreaseThrsut) lander.thrusterPower.y = Math.max(lander.thrusterPower.y - 0.04f, 0);
+		if (increaseThrust) lander.thrusterPower.y = Math.min(lander.thrusterPower.y + 0.01f, 1);
+		if (decreaseThrsut) lander.thrusterPower.y = Math.max(lander.thrusterPower.y - 0.01f, 0);
 
 		if (turnLeft) lander.thrusterPower.x = Math.min(lander.thrusterPower.x + 0.04f, 1);
 		if (turnRight) lander.thrusterPower.x = Math.max(lander.thrusterPower.x - 0.04f, -1);
@@ -136,11 +150,14 @@ public class InGameState extends GameState {
 
 		sb.append("Mission Time: " + (ticksRun / 60 / 60 / 60 / 24 / 30) + ":" + (ticksRun / 60 / 60 / 60 / 24) % 30 + ":" + (ticksRun / 60 / 60 / 60) % 24 + ":" + (ticksRun / 60 / 60) % 60 + ":" + (ticksRun / 60) % 60 + "\n\n");
 
-		sb.append("Horiz Velocity: " + nf.format(lander.body.getLinearVelocity().x) + "m/s\n");
-		sb.append("Verti Velocity: " + nf.format(lander.body.getLinearVelocity().y) + "m/s\n");
+		sb.append("Vel: (" + nf.format(lander.body.getLinearVelocity().x) + ", " + nf.format(lander.body.getLinearVelocity().x) + ") m/s\n");
+		sb.append("Vel in 1s: (" + nf.format(lander.ghost1Velocity.x) + ", " + nf.format(lander.ghost1Velocity.x) + ") m/s\n");
+		sb.append("Vel in 2s: (" + nf.format(lander.ghost2Velocity.x) + ", " + nf.format(lander.ghost2Velocity.x) + ") m/s\n");
 		sb.append("Gravity: " + nf.format(world.getGravity().y) + "m/s/s\n");
 
 		sb.append("\nThruster: " + (int)(lander.thrusterPower.x*100) + "%, " + (int)(lander.thrusterPower.y*100) + "%\n");
+
+
 
 		Assets.mono13.drawMultiLine(batch, sb, 160, 250);
 

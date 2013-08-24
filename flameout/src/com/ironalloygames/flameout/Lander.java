@@ -9,11 +9,14 @@ import com.badlogic.gdx.math.Vector2;
 public class Lander extends Actor {
 
 	private static final float THRUSTER_MOD = 0.7f;
-	private static final float TURN_MOD = 3.0f;
+	private static final float TURN_MOD = 11.f;
 	Vector2 ghost1Pos = null;
 	Vector2 ghost2Pos = null;
 	float ghost1Angle = 0;
 	float ghost2Angle = 0;
+
+	public Vector2 ghost1Velocity = new Vector2();
+	public Vector2 ghost2Velocity = new Vector2();
 
 	public Vector2 thrusterPower = new Vector2();
 
@@ -73,8 +76,6 @@ public class Lander extends Actor {
 	}
 
 	public void rebuildGhostPositions(){
-		System.out.println("REBUILDING");
-
 		Vector2 pos = body.getPosition().cpy();
 		float ang = body.getAngle();
 		Vector2 linVel = body.getLinearVelocity().cpy();
@@ -88,12 +89,16 @@ public class Lander extends Actor {
 		ghost1Pos = body.getPosition().cpy();
 		ghost1Angle = body.getAngle();
 
+		ghost1Velocity = body.getLinearVelocity().cpy();
+
 		for(int i=0;i<60;i++){
 			state.world.step(0.016f, 1, 1);
 		}
 
 		ghost2Pos = body.getPosition().cpy();
 		ghost2Angle = body.getAngle();
+
+		ghost2Velocity = body.getLinearVelocity().cpy();
 
 		body.setTransform(pos, ang);
 		body.setLinearVelocity(linVel);
