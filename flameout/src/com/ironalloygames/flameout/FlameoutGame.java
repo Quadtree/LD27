@@ -18,6 +18,8 @@ public class FlameoutGame implements ApplicationListener {
 
 	private Texture texture;
 
+	long msElapsed;
+
 	@Override
 	public void create() {
 		/*float w = Gdx.graphics.getWidth();
@@ -36,7 +38,11 @@ public class FlameoutGame implements ApplicationListener {
 		sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
 		sprite.setPosition(-sprite.getWidth() / 2, -sprite.getHeight() / 2);*/
 
-		currentGameState = new InGameState();
+		Assets.load();
+
+		currentGameState = new InGameState().created();
+
+		msElapsed = System.currentTimeMillis();
 	}
 
 	@Override
@@ -61,6 +67,13 @@ public class FlameoutGame implements ApplicationListener {
 
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+
+		currentGameState.render();
+
+		if(msElapsed < System.currentTimeMillis()){
+			msElapsed += 16;
+			currentGameState.update();
+		}
 	}
 
 	@Override
