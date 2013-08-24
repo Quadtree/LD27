@@ -32,6 +32,8 @@ public class InGameState extends GameState {
 
 	Body ground = null;
 
+	int[] controllerPos = {3,4,5};
+
 	public void addPebble(Vector2 pos, float size){
 		Pebble p = new Pebble();
 		p.pos = pos.cpy();
@@ -177,7 +179,19 @@ public class InGameState extends GameState {
 		int i = 0;
 
 		for(Entry<Subsystem, Integer> ent : lander.subsystemStatus.entrySet()){
-			Assets.mono13.draw(batch, ent.getKey().name, 190, 120 - (i++ * 16) + yMod);
+			for(int j=0;j<controllerPos.length;j++){
+				if(controllerPos[j] == ent.getKey().ind){
+					switch(j){
+					case 0: batch.setColor(Color.RED); break;
+					case 1: batch.setColor(Color.GREEN); break;
+					case 2: batch.setColor(Color.BLUE); break;
+					}
+					batch.draw(Assets.controller, 156, 123 - ((i + 1) * 16) + yMod, 32, 16);
+					batch.setColor(Color.WHITE);
+				}
+			}
+
+			Assets.mono13.draw(batch, ent.getKey().name, 190, 120 - ((i++) * 16) + yMod);
 		}
 
 		int ind = (Gdx.input.getY() - 180 + yMod) / 16;

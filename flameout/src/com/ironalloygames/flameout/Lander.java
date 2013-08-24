@@ -10,21 +10,23 @@ import com.badlogic.gdx.math.Vector2;
 public class Lander extends Actor {
 
 	enum Subsystem {
-		THRUSTER ("Thruster", "Thruster power is reduced by 50%. ", "Thrusters no longer function."),
-		ENGINE ("Engine", "Main engine power is reduced by 50%.", "The engine no longer functions."),
-		COMMS ("Comms", "No loss.", "The lander becomes permenantly uncontrollable."),
-		CONTROL ("Control", "50% chance control inputs are randomly modified.", "Control inputs are always randomly modified."),
-		LEGS ("Legs", "Legs come down.", "No further effect."),
-		FUEL ("Fuel", "5% of fuel wasted per second.", "10% of fuel wasted per second.");
+		THRUSTER (0, "Thruster", "Thruster power is reduced by 50%. ", "Thrusters no longer function."),
+		ENGINE (1, "Engine", "Main engine power is reduced by 50%.", "The engine no longer functions."),
+		COMMS (2, "Comms", "No loss.", "The lander becomes permenantly uncontrollable."),
+		CONTROL (3, "Control", "50% chance control inputs are randomly modified.", "Control inputs are always randomly modified."),
+		LEGS (4, "Legs", "Legs come down.", "No further effect."),
+		FUEL (5, "Fuel", "5% of fuel wasted per second.", "10% of fuel wasted per second.");
 
 		public String name;
 		public String descriptionAtYellow;
 		public String descriptionAtRed;
+		public int ind;
 
-		private Subsystem(String s, String desc, String desc2){
+		private Subsystem(int ind, String s, String desc, String desc2){
 			name = s;
 			descriptionAtYellow = desc;
 			descriptionAtRed = desc2;
+			this.ind = ind;
 		}
 	}
 
