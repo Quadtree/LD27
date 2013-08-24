@@ -8,6 +8,23 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Lander extends Actor {
 
+	enum Subsystem {
+		THRUSTER ("Thruster", "At yellow, thruster power is reduced by 50%. At red, thrusters no longer function."),
+		ENGINE ("Engine", "At yellow, main engine power is reduced by 50%. At red, the engine no longer functions."),
+		COMMS ("Comms", "At yellow, no loss. At red, the lander becomes permenantly uncontrollable."),
+		CONTROL ("Control", "At yellow, 50% chance control inputs have no effect. At red, lander is uncontrollable."),
+		LEGS ("Legs", "At yellow, legs come down. No further effect at red."),
+		FUEL ("Fuel");
+
+		public String name;
+		public String description;
+
+		private Subsystem(String s, String desc){
+			name = s;
+			description = desc;
+		}
+	}
+
 	private static final float THRUSTER_MOD = 0.7f;
 	private static final float TURN_MOD = 11.f;
 	Vector2 ghost1Pos = null;
