@@ -28,12 +28,14 @@ public class Lander extends Actor {
 		}
 	}
 
-	private static final float THRUSTER_MOD = 0.7f;
+	private static final float THRUSTER_MOD = 0.35f;
 	private static final float TURN_MOD = 11.f;
 	Vector2 ghost1Pos = null;
 	Vector2 ghost2Pos = null;
 	float ghost1Angle = 0;
 	float ghost2Angle = 0;
+
+	public float fuel = 10;
 
 	public Vector2 ghost1Velocity = new Vector2();
 	public Vector2 ghost2Velocity = new Vector2();
@@ -97,6 +99,8 @@ public class Lander extends Actor {
 		this.applyEngineForce();
 
 		this.actualThrusterPower.set(thrusterPower);
+
+		fuel -= thrusterPower.y / 60 * 2;
 
 		super.update();
 	}

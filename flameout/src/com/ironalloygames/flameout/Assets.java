@@ -16,8 +16,11 @@ public class Assets {
 	public static Sprite landerOutline;
 
 	public static BitmapFont mono13;
+	public static BitmapFont mono16;
 
 	public static Sprite pebble;
+
+	public static Sprite tooltip;
 
 	public static void load(){
 		atlas = new TextureAtlas(Gdx.files.internal("atlas.atlas"));
@@ -35,8 +38,11 @@ public class Assets {
 		landerOutline = atlas.createSprite("lander_outline");
 
 		pebble = atlas.createSprite("pebble");
+		tooltip = atlas.createSprite("tooltip");
+
 
 		mono13 = new BitmapFont(Gdx.files.internal("dsm-13-white.fnt"), Gdx.files.internal("dsm-13-white_00.png"), false);
+		mono16 = new BitmapFont(Gdx.files.internal("dsm-16-white.fnt"), Gdx.files.internal("dsm-16-white_00.png"), false);
 
 		System.out.println("Load done");
 	}

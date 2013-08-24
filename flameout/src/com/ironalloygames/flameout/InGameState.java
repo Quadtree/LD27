@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -165,20 +166,37 @@ public class InGameState extends GameState {
 		sb.append("Vel +1s: (" + nf.format(lander.ghost1Velocity.x) + ", " + nf.format(lander.ghost1Velocity.x) + ") m/s\n");
 		sb.append("Gravity: " + nf.format(world.getGravity().y) + "m/s/s\n");
 
-		sb.append("\nThruster: " + (int)(lander.thrusterPower.x*100) + "%, " + (int)(lander.thrusterPower.y*100) + "%\n");
+		sb.append("\nEngines: " + (int)(lander.thrusterPower.x*100) + "%, " + (int)(lander.thrusterPower.y*100) + "%\n");
+
+		sb.append("Fuel: " + nf.format(lander.fuel) + "s @ 50%\n");
 
 		Assets.mono13.drawMultiLine(batch, sb, 160, 250);
+
+		int yMod = -50;
 
 		int i = 0;
 
 		for(Entry<Subsystem, Integer> ent : lander.subsystemStatus.entrySet()){
-			Assets.mono13.draw(batch, ent.getKey().name, 190, 120 + -(i++ * 16));
+			Assets.mono13.draw(batch, ent.getKey().name, 190, 120 - (i++ * 16) + yMod);
 		}
 
-		int ind = ((Gdx.input.getY()) - 180) / 16;
+		int ind = (Gdx.input.getY() - 180 + yMod) / 16;
 
-		if (Gdx.input.getX() > 190 && ind >= 0 && ind < Lander.Subsystem.values().length){
-			System.out.println(ind);
+		if (Gdx.input.getX() > 190 + 400 && ind >= 0 && ind < Lander.Subsystem.values().length){
+			int tlx = (Gdx.input.getX() - 400);
+			int tly = (300 - Gdx.input.getY());
+
+			batch.draw(Assets.tooltip, tlx, tly - 190, 150, 190);
+
+			Assets.mono16.draw(batch, Lander.Subsystem.values()[ind].name, tlx + 10, tly - 10);
+
+			Assets.mono13.setColor(Color.YELLOW);
+			Assets.mono13.drawWrapped(batch, "Yellow: " + Lander.Subsystem.values()[ind].descriptionAtYellow, tlx + 10, tly - 30, 130);
+
+			Assets.mono13.setColor(Color.RED);
+			Assets.mono13.drawWrapped(batch, "Red: " + Lander.Subsystem.values()[ind].descriptionAtRed, tlx + 10, tly - 110, 130);
+
+			Assets.mono13.setColor(Color.WHITE);
 		}
 
 		batch.end();
@@ -187,6 +205,8 @@ public class InGameState extends GameState {
 	@Override
 	public boolean keyDown(int keycode) {
 		if (ticksToRun != 0) return false;
+
+		if (keycode == Keys.X){ lander.thrusterPower.set(0,0); lander.rebuildGhostPositions(); }
 
 		if (keycode == Keys.ENTER) ticksToRun = 60;
 
