@@ -42,6 +42,8 @@ public class FlameoutGame implements ApplicationListener {
 
 		currentGameState = new InGameState().created();
 
+		Gdx.input.setInputProcessor(currentGameState);
+
 		msElapsed = System.currentTimeMillis();
 	}
 

@@ -3,6 +3,7 @@ package com.ironalloygames.flameout;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
@@ -12,6 +13,9 @@ public class Assets {
 	public static ArrayList<Sprite> landerEngineOff = new ArrayList<Sprite>();
 	public static ArrayList<Sprite> landerEngineLow = new ArrayList<Sprite>();
 	public static ArrayList<Sprite> landerEngineHigh = new ArrayList<Sprite>();
+	public static Sprite landerOutline;
+
+	public static BitmapFont mono13;
 
 	public static void load(){
 		atlas = new TextureAtlas(Gdx.files.internal("atlas.atlas"));
@@ -25,6 +29,10 @@ public class Assets {
 			landerEngineLow.add(atlas.createSprite("lander_engine_low" + j));
 			landerEngineHigh.add(atlas.createSprite("lander_engine_high" + j));
 		}
+
+		landerOutline = atlas.createSprite("lander_outline");
+
+		mono13 = new BitmapFont(Gdx.files.internal("dsm-13-white.fnt"), Gdx.files.internal("dsm-13-white_00.png"), false);
 
 		System.out.println("Load done");
 	}

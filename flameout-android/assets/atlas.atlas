@@ -171,9 +171,16 @@ lander_engine_off9
   orig: 128, 128
   offset: 0, 0
   index: -1
+lander_outline
+  rotate: false
+  xy: 392, 392
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
 pebble
   rotate: false
-  xy: 392, 504
+  xy: 522, 634
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
