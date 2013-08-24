@@ -3,6 +3,7 @@ package com.ironalloygames.flameout;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.MathUtils;
@@ -116,13 +117,21 @@ public class InGameState extends GameState {
 			ticksRun++;
 		}
 
-		if (increaseThrust) lander.thrusterPower.y = Math.min(lander.thrusterPower.y + 0.01f, 1);
-		if (decreaseThrsut) lander.thrusterPower.y = Math.max(lander.thrusterPower.y - 0.01f, 0);
+		if(ticksToRun == 0){
+			float moveMod = 1;
 
-		if (turnLeft) lander.thrusterPower.x = Math.min(lander.thrusterPower.x + 0.04f, 1);
-		if (turnRight) lander.thrusterPower.x = Math.max(lander.thrusterPower.x - 0.04f, -1);
+			Vector2 oldThrusterPower = lander.thrusterPower.cpy();
 
-		if(increaseThrust || decreaseThrsut || turnLeft || turnRight) lander.rebuildGhostPositions();
+			if (Gdx.input.isKeyPressed(Keys.SHIFT_LEFT) || Gdx.input.isKeyPressed(Keys.SHIFT_RIGHT)) moveMod = 0.1f;
+
+			if (Gdx.input.isKeyPressed(Keys.W) || Gdx.input.isKeyPressed(Keys.UP)) lander.thrusterPower.y = Math.min(lander.thrusterPower.y + 0.01f * moveMod, 1);
+			if (Gdx.input.isKeyPressed(Keys.S) || Gdx.input.isKeyPressed(Keys.DOWN)) lander.thrusterPower.y = Math.max(lander.thrusterPower.y - 0.01f * moveMod, 0);
+
+			if (Gdx.input.isKeyPressed(Keys.A) || Gdx.input.isKeyPressed(Keys.LEFT)) lander.thrusterPower.x = Math.min(lander.thrusterPower.x + 0.04f * moveMod, 1);
+			if (Gdx.input.isKeyPressed(Keys.D) || Gdx.input.isKeyPressed(Keys.RIGHT)) lander.thrusterPower.x = Math.max(lander.thrusterPower.x - 0.04f * moveMod, -1);
+
+			if(oldThrusterPower.sub(lander.thrusterPower).len2() > 0) lander.rebuildGhostPositions();
+		}
 	}
 
 	@Override
@@ -163,19 +172,9 @@ public class InGameState extends GameState {
 		batch.end();
 	}
 
-	boolean increaseThrust = false;
-	boolean decreaseThrsut = false;
-	boolean turnLeft = false;
-	boolean turnRight = false;
-
 	@Override
 	public boolean keyDown(int keycode) {
 		if (ticksToRun != 0) return false;
-
-		if (keycode == Keys.W) increaseThrust = true;
-		if (keycode == Keys.S) decreaseThrsut = true;
-		if (keycode == Keys.A) turnLeft = true;
-		if (keycode == Keys.D) turnRight = true;
 
 		if (keycode == Keys.ENTER) ticksToRun = 60;
 
@@ -184,10 +183,6 @@ public class InGameState extends GameState {
 
 	@Override
 	public boolean keyUp(int keycode) {
-		if (keycode == Keys.W) increaseThrust = false;
-		if (keycode == Keys.S) decreaseThrsut = false;
-		if (keycode == Keys.A) turnLeft = false;
-		if (keycode == Keys.D) turnRight = false;
 
 		return super.keyUp(keycode);
 	}
