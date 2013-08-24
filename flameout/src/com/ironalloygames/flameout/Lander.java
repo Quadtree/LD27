@@ -8,9 +8,6 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Manifold;
 
 public class Lander extends Actor {
 
@@ -162,21 +159,20 @@ public class Lander extends Actor {
 
 		if(fuel <= 0){ fuel = 0; actualThrusterPower.set(0,0); thrusterPower.set(0,0); }
 
-		if(contacts > 0){
+		if(getContacts() > 0){
 			groundCollision();
+
+			if (body.getLinearVelocity().len() < 0.01f){
+				System.out.println("Game over");
+			}
 		}
 
-		if (contacts > 0 && body.getLinearVelocity().len() < 0.01f){
-			System.out.println("Game over");
-		}
+
 
 		super.update();
 	}
 
-	int _sim_landed = 0;
 	public float maxGroundSpeed = -1;
-
-	int contacts = 0;
 
 	public boolean destroyed = true;
 	public boolean damaged = true;
@@ -194,37 +190,9 @@ public class Lander extends Actor {
 
 		maxGroundSpeed = -1;
 
-		_sim_landed = contacts;
-
-		state.world.setContactListener(new ContactListener(){
-
-			@Override
-			public void beginContact(Contact contact) {
-				_sim_landed++;
-				maxGroundSpeed = Math.max(maxGroundSpeed, body.getLinearVelocity().len());
-			}
-
-			@Override
-			public void endContact(Contact contact) {
-				_sim_landed--;
-			}
-
-			@Override
-			public void preSolve(Contact contact, Manifold oldManifold) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void postSolve(Contact contact, ContactImpulse impulse) {
-				// TODO Auto-generated method stub
-
-			}
-		});
-
 		for(int i=0;i<60;i++){
 
-			if(_sim_landed > 0) maxGroundSpeed = Math.max(maxGroundSpeed, body.getLinearVelocity().len());
+			if(this.getContacts() > 0) maxGroundSpeed = Math.max(maxGroundSpeed, body.getLinearVelocity().len());
 
 			this.applyEngineForce();
 			state.world.step(0.016f, 1, 1);
@@ -236,7 +204,7 @@ public class Lander extends Actor {
 		ghost1Velocity = body.getLinearVelocity().cpy();
 
 		for(int i=0;i<60;i++){
-			if(_sim_landed > 0) maxGroundSpeed = Math.max(maxGroundSpeed, body.getLinearVelocity().len());
+			if(this.getContacts() > 0) maxGroundSpeed = Math.max(maxGroundSpeed, body.getLinearVelocity().len());
 
 			state.world.step(0.016f, 1, 1);
 		}

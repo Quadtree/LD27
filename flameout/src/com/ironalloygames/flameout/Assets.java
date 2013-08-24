@@ -3,6 +3,7 @@ package com.ironalloygames.flameout;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -26,6 +27,8 @@ public class Assets {
 
 	public static Sprite controllerHighlighted;
 
+	public static Sprite newspaperBackground;
+
 	public static void load(){
 		atlas = new TextureAtlas(Gdx.files.internal("atlas.atlas"));
 
@@ -45,6 +48,8 @@ public class Assets {
 		tooltip = atlas.createSprite("tooltip");
 		controller = atlas.createSprite("controller");
 		controllerHighlighted = atlas.createSprite("controller_glow");
+
+		newspaperBackground = new Sprite(new Texture(Gdx.files.internal("newspaper-background.png")));
 
 		mono13 = new BitmapFont(Gdx.files.internal("dsm-13-white.fnt"), Gdx.files.internal("dsm-13-white_00.png"), false);
 		mono16 = new BitmapFont(Gdx.files.internal("dsm-16-white.fnt"), Gdx.files.internal("dsm-16-white_00.png"), false);

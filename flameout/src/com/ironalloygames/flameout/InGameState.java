@@ -328,19 +328,11 @@ public class InGameState extends GameState implements ContactListener {
 
 	@Override
 	public void beginContact(Contact contact) {
-		if(contact.getFixtureA().getBody() == lander.body || contact.getFixtureB().getBody() == lander.body){
-			lander.contacts++;
-			System.out.println("Contacts " + lander.contacts);
-		}
 		super.beginContact(contact);
 	}
 
 	@Override
 	public void endContact(Contact contact) {
-		if(contact.getFixtureA().getBody() == lander.body || contact.getFixtureB().getBody() == lander.body){
-			lander.contacts--;
-			System.out.println("Contacts " + lander.contacts);
-		}
 		super.endContact(contact);
 	}
 
