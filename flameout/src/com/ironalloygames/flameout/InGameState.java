@@ -162,7 +162,7 @@ public class InGameState extends GameState {
 		NumberFormat nf = NumberFormat.getNumberInstance();
 		nf.setMaximumFractionDigits(1);
 
-		sb.append("Mission Time: " + (ticksRun / 60 / 60 / 60 / 24 / 30) + ":" + (ticksRun / 60 / 60 / 60 / 24) % 30 + ":" + (ticksRun / 60 / 60 / 60) % 24 + ":" + (ticksRun / 60 / 60) % 60 + ":" + (ticksRun / 60) % 60 + "\n\n");
+		sb.append(String.format("Mission Time: %02d:%02d:%02d:%02d:%02d\n", (ticksRun / 60 / 60 / 60 / 24 / 30), (ticksRun / 60 / 60 / 60 / 24) % 30, (ticksRun / 60 / 60 / 60) % 24, (ticksRun / 60 / 60) % 60, (ticksRun / 60) % 60));
 
 		sb.append("Vel: (" + nf.format(lander.body.getLinearVelocity().x) + ", " + nf.format(lander.body.getLinearVelocity().x) + ") m/s\n");
 		sb.append("Vel +1s: (" + nf.format(lander.ghost1Velocity.x) + ", " + nf.format(lander.ghost1Velocity.x) + ") m/s\n");
@@ -191,7 +191,10 @@ public class InGameState extends GameState {
 				}
 			}
 
+			if (ent.getValue() == 1) Assets.mono13.setColor(Color.YELLOW);
+			if (ent.getValue() == 2) Assets.mono13.setColor(Color.RED);
 			Assets.mono13.draw(batch, ent.getKey().name, 190, 120 - ((i++) * 16) + yMod);
+			Assets.mono13.setColor(Color.WHITE);
 		}
 
 		int ind = (Gdx.input.getY() - 180 + yMod) / 16;

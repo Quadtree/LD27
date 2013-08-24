@@ -10,12 +10,12 @@ import com.badlogic.gdx.math.Vector2;
 public class Lander extends Actor {
 
 	enum Subsystem {
-		THRUSTER (0, "Thruster", "Thruster power is reduced by 50%. ", "Thrusters no longer function."),
-		ENGINE (1, "Engine", "Main engine power is reduced by 50%.", "The engine no longer functions."),
+		THRUSTER (0, "Thruster", "Thruster power is reduced by 70%. ", "Thrusters no longer function."),
+		ENGINE (1, "Engine", "Main engine power is reduced by 70%.", "The engine no longer functions."),
 		COMMS (2, "Comms", "No loss.", "The lander becomes permenantly uncontrollable."),
 		CONTROL (3, "Control", "50% chance control inputs are randomly modified.", "Control inputs are always randomly modified."),
 		LEGS (4, "Legs", "Legs come down.", "No further effect."),
-		FUEL (5, "Fuel", "5% of fuel wasted per second.", "10% of fuel wasted per second.");
+		FUEL (5, "Fuel", "10% of fuel wasted per second.", "20% of fuel wasted per second.");
 
 		public String name;
 		public String descriptionAtYellow;
@@ -88,6 +88,8 @@ public class Lander extends Actor {
 			subsystemStatus.put(sub, 0);
 		}
 
+		subsystemStatus.put(Subsystem.FUEL, 2);
+
 		body.setTransform(new Vector2(100 * (4.f / 7.f),110 * (4.f / 7.f)), -0.5f);
 		body.setLinearVelocity(-6, 6);
 
@@ -103,6 +105,8 @@ public class Lander extends Actor {
 		this.actualThrusterPower.set(thrusterPower);
 
 		fuel -= thrusterPower.y / 60 * 2;
+
+		fuel *= 1 - ((subsystemStatus.get(Subsystem.FUEL) * 0.1f) / 60);
 
 		super.update();
 	}
