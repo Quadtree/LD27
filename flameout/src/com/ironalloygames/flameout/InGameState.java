@@ -10,6 +10,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.RayCastCallback;
 import com.badlogic.gdx.physics.box2d.World;
 
 
@@ -32,11 +35,6 @@ public class InGameState extends GameState {
 		p.size = size;
 		pebbles.add(p);
 
-		if(ground == null){
-			BodyDef bd = new BodyDef();
-			ground = world.createBody(bd);
-		}
-
 		CircleShape cs = new CircleShape();
 		cs.setPosition(pos);
 		cs.setRadius(size);
@@ -52,14 +50,35 @@ public class InGameState extends GameState {
 	public GameState created(){
 		world = new World(new Vector2(0, -9.1f), false);
 
+		BodyDef bd = new BodyDef();
+		ground = world.createBody(bd);
+
+		PolygonShape ps = new PolygonShape();
+		ps.setAsBox(800, 1, new Vector2(100, -6), 0);
+
+		ground.createFixture(ps, 0);
+
+		for(int i=0;i<600;i++){
+			world.rayCast(new RayCastCallback(){
+
+				@Override
+				public float reportRayFixture(Fixture fixture, Vector2 point,
+						Vector2 normal, float fraction) {
+					float size = MathUtils.random(2, 5);
+					addPebble(point.cpy().add(normal.cpy().scl(size)), size);
+					System.out.println(point);
+					return 0;
+				}
+			}, new Vector2(MathUtils.random(0, 200), 400), new Vector2(MathUtils.random(0, 200), -200));
+		}
+
 		camera = new OrthographicCamera(1,1);
 		lander = (Lander)new Lander().created(this);
 		actors.add(lander);
 
 		uiCamera = new OrthographicCamera(800,600);
 
-		for(int i=0;i<100;i++)
-			addPebble(new Vector2(MathUtils.random(0, 100), 5), 2);
+
 
 		return super.created();
 	}
