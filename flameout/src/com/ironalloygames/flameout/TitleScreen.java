@@ -86,7 +86,7 @@ public class TitleScreen extends GameState {
 
 	@Override
 	public void fullyFaded() {
-		FlameoutGame.game.setGameState(new InGameState());
+		FlameoutGame.game.setGameState(new CruiseScreen());
 		super.fullyFaded();
 	}
 
