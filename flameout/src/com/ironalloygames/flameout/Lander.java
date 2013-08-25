@@ -82,13 +82,15 @@ public class Lander extends Actor {
 
 
 		if(!thrownOffFragments && destroyed){
+			body.setActive(false);
+
 			thrownOffFragments = true;
 
 			for(int i=0;i<50;i++){
 				Actor a = new Fragment();
 				state.actorAddQueue.add(a.created(state));
 
-				a.body.setTransform(body.getPosition(), MathUtils.random(0, 7));
+				a.body.setTransform(body.getPosition().cpy().add(MathUtils.random(-4, 4), MathUtils.random(-4, 4)), MathUtils.random(0, 7));
 			}
 
 			state.addMessage("Oh no!", Speaker.RED);

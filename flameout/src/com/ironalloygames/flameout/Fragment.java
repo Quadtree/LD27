@@ -13,7 +13,7 @@ public class Fragment extends Actor {
 	public Actor created(GameState state) {
 		super.created(state);
 
-		body.setLinearVelocity(MathUtils.random(-30, 30), MathUtils.random(-30, 30));
+		body.setLinearVelocity(MathUtils.random(-40, 40), MathUtils.random(-40, 40));
 		body.setAngularVelocity(MathUtils.random(-10, 10));
 
 		return this;
