@@ -81,6 +81,7 @@ public class FlameoutGame implements ApplicationListener {
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 
 		currentGameState.render();
+		currentGameState.renderMessages();
 
 		if(msElapsed < System.currentTimeMillis()){
 			msElapsed += 16;

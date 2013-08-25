@@ -94,11 +94,6 @@ public class NewsState extends GameState {
 		camera.update();
 	}
 
-	void drawTextCentered(BitmapFont font, String s, int x, int y, int wrapWidth){
-		font.setColor(Color.BLACK);
-		font.drawWrapped(batch, s, x - font.getWrappedBounds(s, wrapWidth).width / 2, y, wrapWidth);
-	}
-
 
 	@Override
 	public void render() {
@@ -135,6 +130,13 @@ public class NewsState extends GameState {
 	public boolean keyDown(int keycode) {
 		FlameoutGame.game.setGameState(new InGameState());
 		return super.keyDown(keycode);
+	}
+
+	@Override
+	protected void drawTextCentered(BitmapFont font, String s, int x, int y,
+			int wrapWidth) {
+		font.setColor(Color.BLACK);
+		super.drawTextCentered(font, s, x, y, wrapWidth);
 	}
 
 
