@@ -14,7 +14,9 @@ public class Damaged1 extends NewsStory {
 		headline = "Hard Lander Landing";
 
 		subheadline = rStr(new String[]{
-				"Chief Science Officer: I can't work with this!"
+				"Chief Science Officer: I can't work with this!",
+				"Scientific Payload Destroyed",
+				"Extremely Expensive Scientific Equipment Destroyed"
 		});
 
 		text = "The space agency's " + MathUtils.random(25, 320) + " million dollar lander crash-landed on its destination. " +

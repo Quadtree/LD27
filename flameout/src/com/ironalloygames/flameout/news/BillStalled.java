@@ -8,7 +8,7 @@ public class BillStalled extends NewsStory {
 	public BillStalled(){
 		house = rStr(new String[]{"Congress", "Parlament", "the Dread Council"});
 
-		headline = "Bill Stalled in " + house;
+		headline = "Stalled in " + house;
 
 		text = "Today the bill to " + rStr(new String[]{
 				"ban the sale of " + rStr(new String[]{

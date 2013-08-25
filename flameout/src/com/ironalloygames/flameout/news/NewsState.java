@@ -43,9 +43,17 @@ public class NewsState extends GameState {
 		NewsStory[] stories = {
 				new Crash1(),
 				new Crash2(),
+				new Crash3(),
+				new Crash4(),
 				new Damaged1(),
+				new Damaged2(),
 				new Landed1(),
-				new BillStalled()
+				new Landed2(),
+				new Landed3(),
+				new Stocks(),
+				new War(),
+				new BillStalled(),
+				new Toothpaste()
 		};
 
 		int n = 1;
@@ -112,7 +120,7 @@ public class NewsState extends GameState {
 
 		regular.drawWrapped(batch, leadingStory.text, -255, 95, 220);
 
-		drawTextCentered(subheadline, secondStory.headline, -20 + (270 / 2), -90, 270);
+		drawTextCentered(subheadline, secondStory.headline, -20 + (270 / 2), -120, 290);
 
 		regular.drawWrapped(batch, secondStory.text, -20, -150, 270);
 
