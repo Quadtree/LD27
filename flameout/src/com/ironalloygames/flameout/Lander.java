@@ -17,7 +17,7 @@ public class Lander extends Actor {
 		ENGINE (1, "Engine", "Main engine power is reduced by 50%.", "The engine no longer functions."),
 		COMMS (2, "Comms", "No loss.", "The lander becomes permenantly uncontrollable."),
 		CONTROL (3, "Control", "Random uncommanded actions.", "Strong random uncommanded actions."),
-		LEGS (4, "Legs", "Legs come down.", "No further effect."),
+		LEGS (4, "Legs", "Legs retracted. Landed explodes on contact with ground.", "No further effect."),
 		FUEL (5, "Fuel", "10% of fuel wasted per second.", "20% of fuel wasted per second.");
 
 		public String name;

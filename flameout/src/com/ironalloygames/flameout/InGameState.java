@@ -28,6 +28,10 @@ public class InGameState extends GameState implements ContactListener {
 	public OrthographicCamera camera;
 	public OrthographicCamera uiCamera;
 
+	static boolean firstTimeSeen = true;
+
+	boolean helpScreenVisible = false;
+
 	public int ticksToRun = 180;
 	int ticksRun = (86400 * 18 + 39584) * 60;
 	int ticks = 0;
@@ -121,6 +125,8 @@ public class InGameState extends GameState implements ContactListener {
 
 		FlameoutGame.game.setMusic(Assets.spaceMusic, 0.5f);
 
+
+
 		return super.created();
 	}
 
@@ -134,7 +140,14 @@ public class InGameState extends GameState implements ContactListener {
 		if(ticks == 40) addMessage("Got it!", Speaker.RED);
 		if(ticks == 65){ addMessage("Extending legs.", Speaker.GREEN); lander.commandedLegPosition = true; }
 		if(ticks == 120) addMessage("Looks like we have this one in the bag.", Speaker.RED);
-		if(ticks == 180) addMessage("10 seconds of fuel,\njust saying.", Speaker.GREEN);
+		if(ticks == 180){
+			addMessage("10 seconds of fuel,\njust saying.", Speaker.GREEN);
+
+			if(firstTimeSeen){
+				helpScreenVisible = true;
+				firstTimeSeen = false;
+			}
+		}
 
 		if(gameOverTime > 0){
 			gameOverTime--;
@@ -341,7 +354,31 @@ public class InGameState extends GameState implements ContactListener {
 
 		if(!Gdx.input.isButtonPressed(Buttons.LEFT)) mouseHasBeenUp = true;
 
+		if(helpScreenVisible){
+			drawHelpScreen();
+		}
+
 		batch.end();
+	}
+
+	private void drawHelpScreen() {
+		batch.draw(Assets.solid, -750 / 2, -550 / 2, 750, 350);
+
+		Assets.mono13.drawWrapped(batch,
+				"The object of this game is to get the lander down onto the grey terrain at the bottom of the screen, and bring it to a total stop. " +
+						"The \"ghosts\" of your lander indicate where it will be in the next two turns, assuming that you cut all power after the first turn. " +
+						"\n\nAs you descend, shoddy lander construction will cause systems to fail. On the middle right is a display of your six subsystems: Thrusters, Engines, Comm, Control, Legs and Fuel. " +
+						"\n\nThe colored markers to their left indicate that a ground crew member is monitoring that system. As long as a system is monitored, it will not fail further, and the crew member will repair it over time. " +
+						"To move a crewmember to a different system, click on them and click on the system you want them to monitor. " +
+						"\n\nMouseover a system to find out what happens if it fails." +
+						"\n\nKey Commands" +
+						"\nWASD/Cursor Keys...............Change Thrust" +
+						"\nShift + Thrust Key.............Minor Thrust Change" +
+						"\nX..............................Stop All Thrust" +
+						"\nEnter..........................End Turn" +
+						"\nF1.............................View This Screen" +
+						"\n\nPress any Key to Continue",
+						-750 / 2 + 15, -550 / 2 + 350 - 15, 720);
 	}
 
 	@Override
@@ -368,6 +405,15 @@ public class InGameState extends GameState implements ContactListener {
 
 	@Override
 	public boolean keyDown(int keycode) {
+		if(helpScreenVisible){
+			helpScreenVisible = false;
+			return super.keyDown(keycode);
+		}
+
+		if(keycode == Keys.F1){
+			helpScreenVisible = true;
+		}
+
 		if (ticksToRun != 0) return false;
 
 		System.out.println("X");
