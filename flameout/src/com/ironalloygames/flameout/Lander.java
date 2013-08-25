@@ -13,7 +13,7 @@ import com.ironalloygames.flameout.GameState.Speaker;
 public class Lander extends Actor {
 
 	enum Subsystem {
-		THRUSTER (0, "Thruster", "Thruster power is reduced by 50%. ", "Thrusters no longer function."),
+		THRUSTER (0, "Thrusters", "Thruster power is reduced by 50%. ", "Thrusters no longer function."),
 		ENGINE (1, "Engine", "Main engine power is reduced by 50%.", "The engine no longer functions."),
 		COMMS (2, "Comms", "No loss.", "The lander becomes permenantly uncontrollable."),
 		CONTROL (3, "Control", "Random uncommanded actions.", "Strong random uncommanded actions."),
@@ -252,6 +252,7 @@ public class Lander extends Actor {
 			groundCollision();
 
 			if (body.getLinearVelocity().len() < 0.2f){
+				this.thrusterPower.set(0,0);
 				state.gameOver();
 			}
 		}
