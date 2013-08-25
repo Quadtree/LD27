@@ -238,7 +238,7 @@ public class Lander extends Actor {
 		if(getContacts() > 0){
 			groundCollision();
 
-			if (body.getLinearVelocity().len() < 0.01f){
+			if (body.getLinearVelocity().len() < 0.2f){
 				state.gameOver();
 			}
 		}

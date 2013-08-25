@@ -2,6 +2,7 @@ package com.ironalloygames.flameout;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 
 public abstract class Actor {
@@ -21,10 +22,16 @@ public abstract class Actor {
 
 		body = state.world.createBody(bd);
 
+		FixtureDef fd = new FixtureDef();
+
 		PolygonShape shape = new PolygonShape();
 		shape.setAsBox(getHalfSize(), getHalfSize());
 
-		body.createFixture(shape, 1);
+		fd.shape = shape;
+		fd.density = 1;
+		fd.friction = 1;
+
+		body.createFixture(fd);
 
 		return this;
 	}
