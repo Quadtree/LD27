@@ -54,6 +54,8 @@ public class Assets {
 	public static Music spaceMusic;
 	public static Music newsMusic;
 
+	public static Sound messageSound;
+
 	public static void load(){
 		atlas = new TextureAtlas(Gdx.files.internal("atlas.atlas"));
 
@@ -99,6 +101,7 @@ public class Assets {
 
 		launchSound = Gdx.audio.newSound(Gdx.files.internal("launch.ogg"));
 		explosionSound = Gdx.audio.newSound(Gdx.files.internal("explosion.wav"));
+		messageSound = Gdx.audio.newSound(Gdx.files.internal("message.wav"));
 
 		landerSpinClockwise = atlas.createSprite("lander_spin_clockwise");
 		landerSpinCounterclockwise = atlas.createSprite("lander_spin_counterclockwise");

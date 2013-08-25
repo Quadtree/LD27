@@ -49,6 +49,8 @@ public class GameState implements InputProcessor, ContactListener {
 		sm.lineBreaks = message.split("\n").length;
 
 		messages.add(sm);
+
+		Assets.messageSound.setVolume(Assets.messageSound.play(), 0.05f);
 	}
 
 	ArrayList<SpokenMessage> messages = new ArrayList<SpokenMessage>();
