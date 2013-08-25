@@ -1,6 +1,5 @@
 package com.ironalloygames.flameout;
 
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Map.Entry;
 
@@ -226,18 +225,15 @@ public class InGameState extends GameState implements ContactListener {
 
 		StringBuilder sb = new StringBuilder();
 
-		NumberFormat nf = NumberFormat.getNumberInstance();
-		nf.setMaximumFractionDigits(1);
-
 		sb.append(String.format("Mission Time: %02d:%02d:%02d:%02d\n", (ticksRun / 60 / 60 / 60 / 24) % 30, (ticksRun / 60 / 60 / 60) % 24, (ticksRun / 60 / 60) % 60, (ticksRun / 60) % 60));
 
-		sb.append("Vel: " + nf.format(lander.body.getLinearVelocity().len()) + " (" + nf.format(lander.body.getLinearVelocity().x) + ", " + nf.format(lander.body.getLinearVelocity().y) + ") m/s\n");
-		sb.append("Vel +1s: " + nf.format(lander.ghost1Velocity.len()) + " (" + nf.format(lander.ghost1Velocity.x) + ", " + nf.format(lander.ghost1Velocity.y) + ") m/s\n");
-		sb.append("Gravity: " + nf.format(world.getGravity().y) + "m/s/s\n");
+		sb.append("Vel: " + String.format("%.1f", lander.body.getLinearVelocity().len()) + " (" + String.format("%.1f", lander.body.getLinearVelocity().x) + ", " + String.format("%.1f", lander.body.getLinearVelocity().y) + ") m/s\n");
+		sb.append("Vel +1s: " + String.format("%.1f", lander.ghost1Velocity.len()) + " (" + String.format("%.1f", lander.ghost1Velocity.x) + ", " + String.format("%.1f", lander.ghost1Velocity.y) + ") m/s\n");
+		sb.append("Gravity: " + String.format("%.1f", world.getGravity().y) + "m/s/s\n");
 
 		sb.append("\nEngines: " + (int)(lander.thrusterPower.x*100) + "%, " + (int)(lander.thrusterPower.y*100) + "%\n");
 
-		sb.append("Fuel: " + nf.format(lander.fuel) + "s @ 50%\n");
+		sb.append("Fuel: " + String.format("%.1f", lander.fuel) + "s @ 50%\n");
 
 		Assets.mono13.drawMultiLine(batch, sb, 160, 280);
 
@@ -245,7 +241,7 @@ public class InGameState extends GameState implements ContactListener {
 			if(Lander.getImpactResult(lander.maxGroundSpeed) == 0) Assets.mono13.setColor(Color.GREEN);
 			if(Lander.getImpactResult(lander.maxGroundSpeed) == 1) Assets.mono13.setColor(Color.YELLOW);
 			if(Lander.getImpactResult(lander.maxGroundSpeed) == 2) Assets.mono13.setColor(Color.RED);
-			Assets.mono13.draw(batch, "Est Contact Speed: " + nf.format(lander.maxGroundSpeed) + "m/s", 160, 173);
+			Assets.mono13.draw(batch, "Est Contact Speed: " + String.format("%.1f", lander.maxGroundSpeed) + "m/s", 160, 173);
 			Assets.mono13.setColor(Color.WHITE);
 		}
 
