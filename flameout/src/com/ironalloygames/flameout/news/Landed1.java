@@ -14,8 +14,8 @@ public class Landed1 extends NewsStory {
 
 		subheadline = rStr(new String[]{
 				"Head of Space Program: " + rStr(new String[]{
-						"I trained them well.",
-						"Perfect planning paid off."
+						"I trained them well",
+						"Perfect planning paid off"
 				})
 		});
 

@@ -198,7 +198,7 @@ public class Lander extends Actor {
 		}
 
 		for(Entry<Subsystem, Integer> ent : subsystemStatus.entrySet()){
-			if(state.canSubsystemBreak(ent.getKey()) && MathUtils.randomBoolean(0.15f / 60) && ent.getValue() < 2){
+			if(state.canSubsystemBreak(ent.getKey()) && MathUtils.randomBoolean(0.19f / 60) && ent.getValue() < 2){
 
 				if(!lastDamagedTime.containsKey(ent.getKey())) lastDamagedTime.put(ent.getKey(), -1000);
 
