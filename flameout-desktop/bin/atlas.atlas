@@ -5,217 +5,231 @@ filter: Nearest,Nearest
 repeat: none
 controller
   rotate: false
-  xy: 132, 141
+  xy: 392, 440
   size: 32, 16
   orig: 32, 16
   offset: 0, 0
   index: -1
 controller_glow
   rotate: false
-  xy: 262, 271
+  xy: 522, 570
   size: 32, 16
   orig: 32, 16
   offset: 0, 0
   index: -1
 fragment
   rotate: false
-  xy: 522, 613
+  xy: 782, 912
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 lander_engine_high1
   rotate: false
-  xy: 2, 809
+  xy: 2, 848
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 lander_engine_high13
   rotate: false
-  xy: 2, 679
+  xy: 2, 718
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 lander_engine_high17
   rotate: false
-  xy: 132, 809
+  xy: 132, 848
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 lander_engine_high21
   rotate: false
-  xy: 2, 549
+  xy: 2, 588
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 lander_engine_high25
   rotate: false
-  xy: 132, 679
+  xy: 132, 718
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 lander_engine_high29
   rotate: false
-  xy: 262, 809
+  xy: 262, 848
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 lander_engine_high5
   rotate: false
-  xy: 2, 419
+  xy: 2, 458
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 lander_engine_high9
   rotate: false
-  xy: 132, 549
+  xy: 132, 588
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 lander_engine_low1
   rotate: false
-  xy: 262, 679
+  xy: 262, 718
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 lander_engine_low13
   rotate: false
-  xy: 392, 809
+  xy: 392, 848
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 lander_engine_low17
   rotate: false
-  xy: 2, 289
+  xy: 2, 328
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 lander_engine_low21
   rotate: false
-  xy: 132, 419
+  xy: 132, 458
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 lander_engine_low25
   rotate: false
-  xy: 262, 549
+  xy: 262, 588
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 lander_engine_low29
   rotate: false
-  xy: 392, 679
+  xy: 392, 718
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 lander_engine_low5
   rotate: false
-  xy: 522, 809
+  xy: 522, 848
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 lander_engine_low9
   rotate: false
-  xy: 2, 159
+  xy: 2, 198
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 lander_engine_off1
   rotate: false
-  xy: 132, 289
+  xy: 132, 328
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 lander_engine_off13
   rotate: false
-  xy: 262, 419
+  xy: 262, 458
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 lander_engine_off17
   rotate: false
-  xy: 392, 549
+  xy: 392, 588
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 lander_engine_off21
   rotate: false
-  xy: 522, 679
+  xy: 522, 718
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 lander_engine_off25
   rotate: false
-  xy: 652, 809
+  xy: 652, 848
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 lander_engine_off29
   rotate: false
-  xy: 2, 29
+  xy: 2, 68
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 lander_engine_off5
   rotate: false
-  xy: 132, 159
+  xy: 132, 198
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 lander_engine_off9
   rotate: false
-  xy: 262, 289
+  xy: 262, 328
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 lander_outline
   rotate: false
-  xy: 392, 419
+  xy: 392, 458
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+lander_spin_clockwise
+  rotate: false
+  xy: 522, 588
+  size: 128, 128
+  orig: 128, 128
+  offset: 0, 0
+  index: -1
+lander_spin_counterclockwise
+  rotate: false
+  xy: 652, 718
   size: 128, 128
   orig: 128, 128
   offset: 0, 0
   index: -1
 pebble
   rotate: false
-  xy: 652, 743
+  xy: 2, 2
   size: 64, 64
   orig: 64, 64
   offset: 0, 0
   index: -1
 solid
   rotate: false
-  xy: 782, 912
+  xy: 132, 171
   size: 25, 25
   orig: 25, 25
   offset: 0, 0
   index: -1
 tooltip
   rotate: false
-  xy: 2, 2
+  xy: 262, 301
   size: 25, 25
   orig: 25, 25
   offset: 0, 0

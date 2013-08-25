@@ -77,6 +77,8 @@ public class Lander extends Actor {
 			graphics = Assets.landerEngineLow;
 		}
 
+
+
 		if(!thrownOffFragments && destroyed){
 			thrownOffFragments = true;
 
@@ -99,6 +101,20 @@ public class Lander extends Actor {
 					graphics.get(curLegStatus / 8), body.getPosition().x, body.getPosition().y,
 					0.5f, 0.5f, 1, 1, getHalfSize() * 2, getHalfSize() * 2, body.getAngle() * (180 / MathUtils.PI) - 90, false
 					);
+
+			if (actualThrusterPower.x > 0.1f){
+				state.batch.draw(
+						Assets.landerSpinCounterclockwise, body.getPosition().x, body.getPosition().y,
+						0.5f, 0.5f, 1, 1, getHalfSize() * 2, getHalfSize() * 2, body.getAngle() * (180 / MathUtils.PI) - 90, false
+						);
+			}
+
+			if (actualThrusterPower.x < -0.1f){
+				state.batch.draw(
+						Assets.landerSpinClockwise, body.getPosition().x, body.getPosition().y,
+						0.5f, 0.5f, 1, 1, getHalfSize() * 2, getHalfSize() * 2, body.getAngle() * (180 / MathUtils.PI) - 90, false
+						);
+			}
 
 			state.batch.draw(
 					Assets.landerOutline, ghost1Pos.x, ghost1Pos.y,
@@ -140,7 +156,7 @@ public class Lander extends Actor {
 
 	@Override
 	public void update() {
-		System.out.println(body.getPosition());
+		//System.out.println(body.getPosition());
 
 		if(body.getPosition().x < -10 || body.getPosition().x > 130) destroyed = true;
 
