@@ -140,6 +140,10 @@ public class Lander extends Actor {
 
 	@Override
 	public void update() {
+		System.out.println(body.getPosition());
+
+		if(body.getPosition().x < -10 || body.getPosition().x > 130) destroyed = true;
+
 		if(destroyed) return;
 
 		this.applyEngineForce();

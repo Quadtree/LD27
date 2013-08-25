@@ -44,7 +44,7 @@ public class GameState implements InputProcessor, ContactListener {
 		SpokenMessage sm = new SpokenMessage();
 		sm.message = message;
 		sm.speaker = speaker;
-		sm.ticks = message.length()*4 + 30;
+		sm.ticks = (message.length()*4 + 30);
 		sm.lineBreaks = message.split("\n").length;
 
 		messages.add(sm);
@@ -83,10 +83,9 @@ public class GameState implements InputProcessor, ContactListener {
 	}
 
 	protected void tickMessages() {
-		for(int i=0;i<messages.size();i++){
-			if(messages.get(i).ticks-- <= 0 && i == 0){
-				messages.remove(i--);
-			}
+		if(messages.size() > 0){
+			messages.get(0).ticks--;
+			if(messages.get(0).ticks <= 0) messages.remove(0);
 		}
 	}
 
