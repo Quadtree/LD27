@@ -7,19 +7,22 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.math.MathUtils;
 import com.ironalloygames.flameout.GameState;
 import com.ironalloygames.flameout.news.NewsStory.Tag;
 
 public class NewsState extends GameState {
 	Random rand = new Random();
 
-	OrthographicCamera camera = new OrthographicCamera(800,600);
+	OrthographicCamera camera = new OrthographicCamera(100000,100000);
 
 	static BitmapFont headline, subheadline, regular;
 
 	static Texture background;
 
 	String newspaperName = "";
+
+	float zoom = 0.01f;
 
 	protected String rStr(String[] options){
 		return options[rand.nextInt(options.length)];
@@ -65,6 +68,23 @@ public class NewsState extends GameState {
 
 	@Override
 	public void update() {
+		zoom *= 1.5f;
+		zoom = Math.min(zoom, 1);
+
+		camera = new OrthographicCamera(800,600);
+		camera.zoom = 1 / zoom;
+		camera.rotate(MathUtils.random(0, MathUtils.PI2));
+		camera.update();
+	}
+
+	void drawTextCentered(BitmapFont font, String s, int x, int y, int wrapWidth){
+		font.setColor(Color.BLACK);
+		font.drawWrapped(batch, s, x - font.getWrappedBounds(s, wrapWidth).width / 2, y, wrapWidth);
+	}
+
+
+	@Override
+	public void render() {
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 
@@ -88,17 +108,6 @@ public class NewsState extends GameState {
 		batch.draw(leadingStory.image, -20, 95 - 178, 267, 178);
 
 		batch.end();
-	}
-
-	void drawTextCentered(BitmapFont font, String s, int x, int y, int wrapWidth){
-		font.setColor(Color.BLACK);
-		font.drawWrapped(batch, s, x - font.getWrappedBounds(s, wrapWidth).width / 2, y, wrapWidth);
-	}
-
-
-	@Override
-	public void render() {
-
 	}
 
 
