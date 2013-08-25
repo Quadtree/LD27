@@ -15,6 +15,10 @@ public class TitleScreen extends GameState {
 	public void update() {
 		if(launchStatus > 0)
 			launchStatus++;
+
+		if(gr == 0 && launchStatus > 240) gr = 1;
+		if(gr == 1 && launchStatus > 360) gr = 2;
+
 		super.update();
 	}
 
@@ -23,11 +27,31 @@ public class TitleScreen extends GameState {
 		batch.setProjectionMatrix(cam.combined);
 		batch.begin();
 
+		if(launchStatus > 500){
+
+			System.out.println(1 - ((float)launchStatus - 500) / 60);
+
+			batch.setColor(
+					1 - ((float)launchStatus - 500) / 60,
+					1 - ((float)launchStatus - 500) / 60,
+					1 - ((float)launchStatus - 500) / 60,
+					1
+					);
+		}
+
+		if(launchStatus > 558){
+			FlameoutGame.game.setGameState(new InGameState());
+		}
+
 		batch.draw(Assets.launchScreen[gr], -400, -300);
 
-		drawTextCentered(Assets.borderedLarge, "Flameout", 0, 200, 1000);
-		drawTextCentered(Assets.borderedSmall, "Made by Quadtree for Ludum Dare 27", 230, -280, 1000);
-		drawTextCentered(Assets.borderedSmall, "Press any Key to Begin", -300, -280, 1000);
+		if(launchStatus == 0){
+			drawTextCentered(Assets.borderedLarge, "Flameout", 0, 200, 1000);
+			drawTextCentered(Assets.borderedSmall, "Made by Quadtree for Ludum Dare 27", 230, -280, 1000);
+			drawTextCentered(Assets.borderedSmall, "Press any Key to Begin", -300, -280, 1000);
+		}
+
+
 
 		batch.end();
 
