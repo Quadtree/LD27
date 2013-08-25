@@ -15,6 +15,7 @@ public class Damaged1 extends NewsStory {
 
 		subheadline = rStr(new String[]{
 				"Chief Science Officer: I can't work with this!",
+				"Controller: I told him he was coming in too hot!",
 				"Scientific Payload Destroyed",
 				"Extremely Expensive Scientific Equipment Destroyed"
 		});
