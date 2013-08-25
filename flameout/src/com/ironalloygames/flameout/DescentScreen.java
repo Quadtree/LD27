@@ -2,6 +2,7 @@ package com.ironalloygames.flameout;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 public class DescentScreen extends GameState {
@@ -10,6 +11,8 @@ public class DescentScreen extends GameState {
 	int tm;
 
 	Sprite sp;
+
+	boolean shake = false;
 
 	@Override
 	public GameState created() {
@@ -20,12 +23,12 @@ public class DescentScreen extends GameState {
 	@Override
 	public void update() {
 
-		if(tm == 1) addMessage("Descent vector looks good.\nT minus 3 to final\nslowdown burn.", Speaker.BLUE);
+		if(tm == 1) addMessage("Descent vector looks good.\nT minus 2 to final\nslowdown burn.", Speaker.BLUE);
 		if(tm == 20) addMessage("Got it!", Speaker.RED);
 		if(tm == 50) addMessage("Radar indicates the LZ is too rocky.\n", Speaker.GREEN);
-		if(tm == 120){ addMessage("Ignition!", Speaker.RED); sp = Assets.landerEngineHigh.get(0); }
-		if(tm == 90){ addMessage("We'll just keep flying\nuntil we find a new LZ.", Speaker.BLUE); }
-		if(tm == 280){ addMessage("Engine cutoff!", Speaker.RED); sp = Assets.landerEngineOff.get(0); }
+		if(tm == 120){ addMessage("Ignition!", Speaker.RED); sp = Assets.landerEngineHigh.get(0); shake = true; }
+		if(tm == 260){ addMessage("We'll just keep flying\nuntil we find a new LZ.", Speaker.BLUE); }
+		if(tm == 280){ addMessage("Engine to hover power!", Speaker.RED); sp = Assets.landerEngineLow.get(0); shake = false; }
 		if(tm == 400) this.beginFade();
 
 		tm++;
@@ -46,7 +49,7 @@ public class DescentScreen extends GameState {
 
 		batch.draw(Assets.starfield, -400, -300, 800, 600);
 
-		batch.draw(sp, 0, 0, 0.5f, 0.5f, 1, 1, 64, 64, 300);
+		batch.draw(sp, 0 + (shake ? MathUtils.random(-2, 2) : 0), 0 + (shake ? MathUtils.random(-2, 2) : 0), 0.5f, 0.5f, 1, 1, 64, 64, 300);
 
 		batch.end();
 		super.render();
