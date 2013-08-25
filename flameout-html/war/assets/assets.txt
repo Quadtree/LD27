@@ -19,6 +19,7 @@ i:launch0.png:418330:image/png
 i:launch1.png:459235:image/png
 i:launch2.png:425626:image/png
 a:launchMusic.ogg:235278:application/unknown
+a:message.wav:12978:audio/x-wav
 a:news.ogg:1976027:application/unknown
 i:newspaper-background.png:2162:image/png
 i:newspaper.png:81600:image/png
