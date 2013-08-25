@@ -68,12 +68,15 @@ public class NewsState extends GameState {
 
 	@Override
 	public void update() {
-		zoom *= 1.5f;
+		zoom *= 1.2f;
 		zoom = Math.min(zoom, 1);
 
 		camera = new OrthographicCamera(800,600);
 		camera.zoom = 1 / zoom;
-		camera.rotate(MathUtils.random(0, MathUtils.PI2));
+
+		if(zoom < 1)
+			camera.rotate(MathUtils.random(0, 360));
+
 		camera.update();
 	}
 
