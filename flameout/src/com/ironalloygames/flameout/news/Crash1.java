@@ -19,7 +19,10 @@ public class Crash1 extends NewsStory {
 				})
 		});
 
-		text = "Today the space agency's lander CRASHED on landing.";
+		text = "Today the space agency's lander " + rStr(new String[]{"detonated", "crashed", "exploded", "blew up"}) + " on landing.\n\n" +
+				"A spokesperson for the agency said that the cause was under investigation.\n\n" +
+				"\"This " + rStr(new String[]{"cataclysm", "debacle", "fiasco"}) + " has called the space agency's whole budget into question,\" a government source was quoted as saying.\n\n" +
+				"Three committees have already been formed to investigate the " + rStr(new String[]{"cataclysm", "debacle", "fiasco"}) + ".";
 
 		if (img == null){
 			image = new Sprite(new Texture(Gdx.files.internal("lander_destroyed.png")));

@@ -31,7 +31,12 @@ public class BillStalled extends NewsStory {
 				"foundered",
 				"was crushed",
 				"fell apart"
-		}) + " when it failed a crucial vote. The bill has come under criticism from ...";
+		}) + " when it failed a crucial vote. The bill has come under criticism from " +
+		rStr(new String[]{
+				"communist groups",
+				"environmentalist groups",
+				"persons"
+		}) + ".";
 
 		tags.add(Tag.FLUFF);
 	}

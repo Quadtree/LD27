@@ -110,6 +110,11 @@ public class NewsState extends GameState {
 
 		batch.draw(leadingStory.image, -20, 95 - 178, 267, 178);
 
+		regular.setColor(Color.WHITE);
+
+		if(zoom >= 0.999f)
+			regular.draw(batch, "Press any Key to Restart", -100, -280);
+
 		batch.end();
 	}
 
