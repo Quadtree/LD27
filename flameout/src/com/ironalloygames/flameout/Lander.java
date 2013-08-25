@@ -53,6 +53,8 @@ public class Lander extends Actor {
 
 	public EnumMap<Subsystem, Integer> subsystemStatus = new EnumMap<Subsystem, Integer>(Subsystem.class);
 
+	public EnumMap<Subsystem, Integer> lastDamagedTime = new EnumMap<Subsystem, Integer>(Subsystem.class);
+
 	public boolean commandedLegPosition = false;
 
 	public static int getImpactResult(float speed){
@@ -154,9 +156,13 @@ public class Lander extends Actor {
 		return con;
 	}
 
+	int tick = 0;
+
 	@Override
 	public void update() {
 		//System.out.println(body.getPosition());
+
+		tick++;
 
 		if(body.getPosition().x < -10 || body.getPosition().x > 130) destroyed = true;
 
@@ -193,26 +199,33 @@ public class Lander extends Actor {
 
 		for(Entry<Subsystem, Integer> ent : subsystemStatus.entrySet()){
 			if(state.canSubsystemBreak(ent.getKey()) && MathUtils.randomBoolean(0.15f / 60) && ent.getValue() < 2){
-				ent.setValue(ent.getValue() + 1);
 
-				if(ent.getKey() == Subsystem.COMMS && ent.getValue() == 1) state.addMessage("I'm getting a worrying amount\nof static in the R/C system!", Speaker.GREEN);
-				if(ent.getKey() == Subsystem.COMMS && ent.getValue() == 2) state.addMessage("I've got no control!!!", Speaker.RED);
+				if(!lastDamagedTime.containsKey(ent.getKey())) lastDamagedTime.put(ent.getKey(), -1000);
 
-				if(ent.getKey() == Subsystem.CONTROL && ent.getValue() == 1) state.addMessage("Whoa, something is wrong\nwith the control system!", Speaker.RED);
-				if(ent.getKey() == Subsystem.CONTROL && ent.getValue() == 2) state.addMessage("I didn't do that! What's\nhappening?!?!", Speaker.RED);
+				if(tick - lastDamagedTime.get(ent.getKey()) > 60){
+					lastDamagedTime.put(ent.getKey(), tick);
 
-				if(ent.getKey() == Subsystem.ENGINE && ent.getValue() == 1) state.addMessage("We're losing engine power.", Speaker.GREEN);
-				if(ent.getKey() == Subsystem.ENGINE && ent.getValue() == 2) state.addMessage("Main engine is offline.", Speaker.GREEN);
+					ent.setValue(ent.getValue() + 1);
 
-				if(ent.getKey() == Subsystem.FUEL && ent.getValue() == 1) state.addMessage("Fuel leak.", Speaker.GREEN);
-				if(ent.getKey() == Subsystem.FUEL && ent.getValue() == 2) state.addMessage("Fuel leak has gotten larger...", Speaker.GREEN);
+					if(ent.getKey() == Subsystem.COMMS && ent.getValue() == 1) state.addMessage("I'm getting a worrying amount\nof static in the R/C system!", Speaker.GREEN);
+					if(ent.getKey() == Subsystem.COMMS && ent.getValue() == 2) state.addMessage("I've got no control!!!", Speaker.RED);
 
-				if(ent.getKey() == Subsystem.LEGS && ent.getValue() == 1) state.addMessage("The legs have retracted!", Speaker.GREEN);
+					if(ent.getKey() == Subsystem.CONTROL && ent.getValue() == 1) state.addMessage("Whoa, something is wrong\nwith the control system!", Speaker.RED);
+					if(ent.getKey() == Subsystem.CONTROL && ent.getValue() == 2) state.addMessage("I didn't do that! What's\nhappening?!?!", Speaker.RED);
 
-				if(ent.getKey() == Subsystem.THRUSTER && ent.getValue() == 1) state.addMessage("RCS power down to 50%.", Speaker.GREEN);
-				if(ent.getKey() == Subsystem.THRUSTER && ent.getValue() == 2) state.addMessage("We've lost all RCS power.", Speaker.GREEN);
+					if(ent.getKey() == Subsystem.ENGINE && ent.getValue() == 1) state.addMessage("We're losing engine power.", Speaker.GREEN);
+					if(ent.getKey() == Subsystem.ENGINE && ent.getValue() == 2) state.addMessage("Main engine is offline.", Speaker.GREEN);
+
+					if(ent.getKey() == Subsystem.FUEL && ent.getValue() == 1) state.addMessage("Fuel leak.", Speaker.GREEN);
+					if(ent.getKey() == Subsystem.FUEL && ent.getValue() == 2) state.addMessage("Fuel leak has gotten larger...", Speaker.GREEN);
+
+					if(ent.getKey() == Subsystem.LEGS && ent.getValue() == 1) state.addMessage("The legs have retracted!", Speaker.GREEN);
+
+					if(ent.getKey() == Subsystem.THRUSTER && ent.getValue() == 1) state.addMessage("RCS power down to 50%.", Speaker.GREEN);
+					if(ent.getKey() == Subsystem.THRUSTER && ent.getValue() == 2) state.addMessage("We've lost all RCS power.", Speaker.GREEN);
+				}
 			}
-			if(!state.canSubsystemBreak(ent.getKey()) && MathUtils.randomBoolean(0.3f / 60) && ent.getValue() > 0){
+			if(!state.canSubsystemBreak(ent.getKey()) && MathUtils.randomBoolean(0.5f / 60) && ent.getValue() > 0){
 				ent.setValue(ent.getValue() - 1);
 
 				if(ent.getKey() == Subsystem.COMMS && ent.getValue() == 0) state.addMessage("R/C system in the green!", state.getController(ent.getKey()));
