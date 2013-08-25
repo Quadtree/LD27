@@ -7,8 +7,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.ironalloygames.flameout.news.NewsState;
-import com.ironalloygames.flameout.news.NewsStory;
 
 public class FlameoutGame implements ApplicationListener {
 	private SpriteBatch batch;
@@ -47,7 +45,8 @@ public class FlameoutGame implements ApplicationListener {
 		Assets.load();
 
 		//currentGameState = new InGameState().created();
-		setGameState(new NewsState(NewsStory.Tag.PERFECT));
+		//setGameState(new NewsState(NewsStory.Tag.PERFECT));
+		setGameState(new TitleScreen());
 
 		msElapsed = System.currentTimeMillis();
 	}

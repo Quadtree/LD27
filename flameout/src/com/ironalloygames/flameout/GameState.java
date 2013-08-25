@@ -23,7 +23,7 @@ public class GameState implements InputProcessor, ContactListener {
 	}
 
 	public void update(){
-		world.step(0.016f, 4, 4);
+		if (world != null) world.step(0.016f, 4, 4);
 
 		for(int i=0;i<actors.size();i++){
 			actors.get(i).update();

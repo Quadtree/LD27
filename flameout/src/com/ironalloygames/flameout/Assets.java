@@ -29,6 +29,11 @@ public class Assets {
 
 	public static Sprite newspaperBackground;
 
+	public static Texture[] launchScreen;
+
+	public static BitmapFont borderedLarge;
+	public static BitmapFont borderedSmall;
+
 	public static void load(){
 		atlas = new TextureAtlas(Gdx.files.internal("atlas.atlas"));
 
@@ -53,6 +58,15 @@ public class Assets {
 
 		mono13 = new BitmapFont(Gdx.files.internal("dsm-13-white.fnt"), Gdx.files.internal("dsm-13-white_00.png"), false);
 		mono16 = new BitmapFont(Gdx.files.internal("dsm-16-white.fnt"), Gdx.files.internal("dsm-16-white_00.png"), false);
+
+		launchScreen = new Texture[]{
+				new Texture(Gdx.files.internal("launch0.png")),
+				new Texture(Gdx.files.internal("launch1.png")),
+				new Texture(Gdx.files.internal("launch2.png"))
+		};
+
+		borderedLarge = new BitmapFont(Gdx.files.internal("large-bordered.fnt"), Gdx.files.internal("large-bordered_00.png"), false);
+		borderedSmall = new BitmapFont(Gdx.files.internal("small-bordered.fnt"), Gdx.files.internal("small-bordered_00.png"), false);
 
 		System.out.println("Load done");
 	}
