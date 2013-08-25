@@ -37,10 +37,14 @@ public class NewsState extends GameState {
 	}
 
 	public NewsState(Tag leadingStoryTag){
+
+		System.out.println("Leading story tag is " + leadingStoryTag);
+
 		NewsStory[] stories = {
-				//new Crash1(),
+				new Crash1(),
 				new Crash2(),
 				new Damaged1(),
+				new Landed1(),
 				new BillStalled()
 		};
 

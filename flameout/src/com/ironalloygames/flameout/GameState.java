@@ -23,11 +23,11 @@ public class GameState implements InputProcessor, ContactListener {
 	}
 
 	public void update(){
+		world.step(0.016f, 4, 4);
+
 		for(int i=0;i<actors.size();i++){
 			actors.get(i).update();
 		}
-
-		world.step(0.016f, 4, 4);
 	}
 
 	public void render(){
@@ -35,6 +35,8 @@ public class GameState implements InputProcessor, ContactListener {
 			a.render();
 		}
 	}
+
+	public void gameOver(){}
 
 	@Override
 	public boolean keyDown(int keycode) {

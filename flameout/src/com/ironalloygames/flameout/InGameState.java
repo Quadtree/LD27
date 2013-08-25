@@ -20,6 +20,8 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.RayCastCallback;
 import com.badlogic.gdx.physics.box2d.World;
 import com.ironalloygames.flameout.Lander.Subsystem;
+import com.ironalloygames.flameout.news.NewsState;
+import com.ironalloygames.flameout.news.NewsStory;
 
 
 public class InGameState extends GameState implements ContactListener {
@@ -120,6 +122,17 @@ public class InGameState extends GameState implements ContactListener {
 	@Override
 	public void update() {
 		if(lander.subsystemStatus.get(Lander.Subsystem.COMMS) == 2) ticksToRun = 10;
+
+		if(gameOverTime > 0){
+			gameOverTime--;
+			ticksToRun = 10;
+
+			if(gameOverTime == 1){
+				if(lander.destroyed) FlameoutGame.game.setGameState(new NewsState(NewsStory.Tag.DESTROYED));
+				else if(lander.damaged) FlameoutGame.game.setGameState(new NewsState(NewsStory.Tag.DAMAGED));
+				else FlameoutGame.game.setGameState(new NewsState(NewsStory.Tag.PERFECT));
+			}
+		}
 
 		if(ticksToRun == 1){
 			lander.rebuildGhostPositions();
@@ -297,6 +310,14 @@ public class InGameState extends GameState implements ContactListener {
 
 		batch.end();
 	}
+
+	@Override
+	public void gameOver() {
+		if(gameOverTime == 0) gameOverTime = 120;
+		super.gameOver();
+	}
+
+	int gameOverTime = 0;
 
 	boolean mouseHasBeenUp = true;
 

@@ -47,7 +47,7 @@ public class FlameoutGame implements ApplicationListener {
 		Assets.load();
 
 		//currentGameState = new InGameState().created();
-		setGameState(new NewsState(NewsStory.Tag.DAMAGED));
+		setGameState(new NewsState(NewsStory.Tag.PERFECT));
 
 		msElapsed = System.currentTimeMillis();
 	}

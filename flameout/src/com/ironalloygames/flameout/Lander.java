@@ -163,7 +163,7 @@ public class Lander extends Actor {
 			groundCollision();
 
 			if (body.getLinearVelocity().len() < 0.01f){
-				System.out.println("Game over");
+				state.gameOver();
 			}
 		}
 
@@ -174,12 +174,12 @@ public class Lander extends Actor {
 
 	public float maxGroundSpeed = -1;
 
-	public boolean destroyed = true;
-	public boolean damaged = true;
+	public boolean destroyed = false;
+	public boolean damaged = false;
 
 	public void groundCollision(){
-		if(Lander.getImpactResult(body.getLinearVelocity().len()) == 2) destroyed = true;
-		if(Lander.getImpactResult(body.getLinearVelocity().len()) == 1) damaged = true;
+		if(Lander.getImpactResult(body.getLinearVelocity().len()) == 2){ destroyed = true; System.out.println("Destroyed at " + body.getLinearVelocity().len()); }
+		if(Lander.getImpactResult(body.getLinearVelocity().len()) == 1){  damaged = true; System.out.println("Damaged at " + body.getLinearVelocity().len()); }
 	}
 
 	public void rebuildGhostPositions(){
