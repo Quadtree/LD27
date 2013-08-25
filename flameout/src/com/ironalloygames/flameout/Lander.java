@@ -225,7 +225,7 @@ public class Lander extends Actor {
 					if(ent.getKey() == Subsystem.THRUSTER && ent.getValue() == 2) state.addMessage("We've lost all RCS power.", Speaker.GREEN);
 				}
 			}
-			if(!state.canSubsystemBreak(ent.getKey()) && MathUtils.randomBoolean(0.5f / 60) && ent.getValue() > 0){
+			if(!state.canSubsystemBreak(ent.getKey()) && MathUtils.randomBoolean(0.5f / 60) && ent.getValue() > 0 && subsystemStatus.get(Subsystem.COMMS) != 2){
 				ent.setValue(ent.getValue() - 1);
 
 				if(ent.getKey() == Subsystem.COMMS && ent.getValue() == 0) state.addMessage("R/C system in the green!", state.getController(ent.getKey()));
