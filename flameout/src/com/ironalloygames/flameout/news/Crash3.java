@@ -10,7 +10,7 @@ public class Crash3 extends NewsStory {
 	static Texture img;
 
 	public Crash3(){
-		headline = "Interplanetary " + rStr(new String[]{"Catastrophe", "Disaser", "Catacylsm", "Debacle"});
+		headline = "Interplanetary " + rStr(new String[]{"Catastrophe", "Disaster", "Catacylsm", "Debacle"});
 
 		subheadline = rStr(new String[]{
 				"Spacecraft Encounters Unexpected Giant Object"
