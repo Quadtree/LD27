@@ -8,6 +8,7 @@ public class CruiseScreen extends GameState {
 
 	int gr;
 	int tm = 0;
+	int ticksRun = (86400 * 18 + 39584) * 60 - (60*60*60*5);
 
 	@Override
 	public void update() {
@@ -25,6 +26,8 @@ public class CruiseScreen extends GameState {
 			gr = 1;
 		}
 
+		ticksRun++;
+
 		super.update();
 	}
 
@@ -39,6 +42,11 @@ public class CruiseScreen extends GameState {
 		batch.setProjectionMatrix(cam.combined);
 		batch.begin();
 		batch.draw(Assets.cruiseScreen[gr], -400, -300);
+		StringBuilder sb = new StringBuilder();
+		sb.append(String.format("Mission Time: %02d:%02d:%02d:%02d\n", (ticksRun / 60 / 60 / 60 / 24 / 30), (ticksRun / 60 / 60 / 60 / 24) % 30, (ticksRun / 60 / 60 / 60) % 24, (ticksRun / 60 / 60) % 60, (ticksRun / 60) % 60));
+
+		Assets.mono13.drawMultiLine(batch, sb, 160, 250);
+
 		batch.end();
 		super.render();
 	}

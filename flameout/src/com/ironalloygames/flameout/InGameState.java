@@ -139,9 +139,7 @@ public class InGameState extends GameState implements ContactListener {
 			ticksToRun = 10;
 
 			if(gameOverTime == 1){
-				if(lander.destroyed) FlameoutGame.game.setGameState(new NewsState(NewsStory.Tag.DESTROYED));
-				else if(lander.damaged) FlameoutGame.game.setGameState(new NewsState(NewsStory.Tag.DAMAGED));
-				else FlameoutGame.game.setGameState(new NewsState(NewsStory.Tag.PERFECT));
+
 			}
 		}
 
@@ -331,8 +329,16 @@ public class InGameState extends GameState implements ContactListener {
 
 	@Override
 	public void gameOver() {
-		if(gameOverTime == 0) gameOverTime = 120;
+		beginFade();
 		super.gameOver();
+	}
+
+	@Override
+	public void fullyFaded() {
+		if(lander.destroyed) FlameoutGame.game.setGameState(new NewsState(NewsStory.Tag.DESTROYED));
+		else if(lander.damaged) FlameoutGame.game.setGameState(new NewsState(NewsStory.Tag.DAMAGED));
+		else FlameoutGame.game.setGameState(new NewsState(NewsStory.Tag.PERFECT));
+		super.fullyFaded();
 	}
 
 	int gameOverTime = 0;
