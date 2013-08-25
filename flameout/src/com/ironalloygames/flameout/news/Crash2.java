@@ -13,7 +13,7 @@ public class Crash2 extends NewsStory {
 		headline = "Investigative Committee Finished";
 
 		subheadline = rStr(new String[]{
-				"Lander disaster attributed to operator error: Crewmember tempted fate"
+				"Lander disaster attributed to operator error: Ground controller tempted fate"
 		});
 
 		text = "A probe into the cause of the recent lander disaster has found that an error by one of the ground operators was the primary cause of the crash. " +
