@@ -49,7 +49,7 @@ public class CruiseScreen extends GameState {
 		batch.begin();
 		batch.draw(Assets.cruiseScreen[gr], 0, 0, 0.5f, 0.5f, 1, 1, 800, 600, 180, 0, 0, 800, 600, false, false);
 		StringBuilder sb = new StringBuilder();
-		sb.append(String.format("Mission Time: %02d:%02d:%02d:%02d\n", (ticksRun / 60 / 60 / 60 / 24) % 30, (ticksRun / 60 / 60 / 60) % 24, (ticksRun / 60 / 60) % 60, (ticksRun / 60) % 60));
+		sb.append(Ut.getMissionTime(ticksRun) + "\n");
 
 		Assets.mono13.drawMultiLine(batch, sb, 160, 280);
 

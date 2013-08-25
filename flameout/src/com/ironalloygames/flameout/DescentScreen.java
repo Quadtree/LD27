@@ -56,7 +56,7 @@ public class DescentScreen extends GameState {
 		batch.draw(sp, 0 + (shake ? MathUtils.random(-2, 2) : 0), 0 + (shake ? MathUtils.random(-2, 2) : 0), 0.5f, 0.5f, 1, 1, 64, 64, 300);
 
 		StringBuilder sb = new StringBuilder();
-		sb.append(String.format("Mission Time: %02d:%02d:%02d:%02d\n", (ticksRun / 60 / 60 / 60 / 24) % 30, (ticksRun / 60 / 60 / 60) % 24, (ticksRun / 60 / 60) % 60, (ticksRun / 60) % 60));
+		sb.append(Ut.getMissionTime(ticksRun) + "\n");
 
 		Assets.mono13.drawMultiLine(batch, sb, 160, 280);
 
