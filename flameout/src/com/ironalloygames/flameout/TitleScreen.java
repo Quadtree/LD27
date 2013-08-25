@@ -44,7 +44,7 @@ public class TitleScreen extends GameState {
 
 	@Override
 	public GameState created() {
-		FlameoutGame.game.setMusic(Assets.launchMusic, 0.5f);
+
 		return super.created();
 	}
 
@@ -98,7 +98,8 @@ public class TitleScreen extends GameState {
 
 	@Override
 	public boolean keyDown(int keycode) {
-		launchStatus = 1;
+		if(launchStatus == 0) launchStatus = 1;
+		FlameoutGame.game.setMusic(Assets.launchMusic, 0.5f);
 		return super.keyDown(keycode);
 	}
 
