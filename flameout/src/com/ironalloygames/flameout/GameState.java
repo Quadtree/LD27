@@ -105,7 +105,7 @@ public class GameState implements InputProcessor, ContactListener {
 
 			Assets.borderedSmall.drawMultiLine(batch, messages.get(i).message, getMessagePos().x, y);
 
-			y -= messages.get(i).lineBreaks * 23;
+			y -= Assets.borderedSmall.getMultiLineBounds(messages.get(i).message).height + 11;
 		}
 		batch.end();
 
