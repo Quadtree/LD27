@@ -145,7 +145,7 @@ public class InGameState extends GameState implements ContactListener {
 
 		if(lander.destroyed && gameOverTime == 0) gameOverTime = 180;
 
-		if(lander.destroyed) ticksToRun = 10;
+		if(lander.destroyed || this.fadeStatus > 0) ticksToRun = 10;
 
 		if(ticksToRun == 1){
 			lander.rebuildGhostPositions();
@@ -207,12 +207,14 @@ public class InGameState extends GameState implements ContactListener {
 		batch.setProjectionMatrix(uiCamera.combined);
 		batch.begin();
 
+		batch.draw(Assets.tooltip, 150, 150, 300, 200);
+
 		StringBuilder sb = new StringBuilder();
 
 		NumberFormat nf = NumberFormat.getNumberInstance();
 		nf.setMaximumFractionDigits(1);
 
-		sb.append(String.format("Mission Time: %02d:%02d:%02d:%02d\n", (ticksRun / 60 / 60 / 60 / 24 / 30), (ticksRun / 60 / 60 / 60 / 24) % 30, (ticksRun / 60 / 60 / 60) % 24, (ticksRun / 60 / 60) % 60, (ticksRun / 60) % 60));
+		sb.append(String.format("Mission Time: %02d:%02d:%02d:%02d\n", (ticksRun / 60 / 60 / 60 / 24) % 30, (ticksRun / 60 / 60 / 60) % 24, (ticksRun / 60 / 60) % 60, (ticksRun / 60) % 60));
 
 		sb.append("Vel: " + nf.format(lander.body.getLinearVelocity().len()) + " (" + nf.format(lander.body.getLinearVelocity().x) + ", " + nf.format(lander.body.getLinearVelocity().y) + ") m/s\n");
 		sb.append("Vel +1s: " + nf.format(lander.ghost1Velocity.len()) + " (" + nf.format(lander.ghost1Velocity.x) + ", " + nf.format(lander.ghost1Velocity.y) + ") m/s\n");
@@ -222,17 +224,17 @@ public class InGameState extends GameState implements ContactListener {
 
 		sb.append("Fuel: " + nf.format(lander.fuel) + "s @ 50%\n");
 
-		Assets.mono13.drawMultiLine(batch, sb, 160, 250);
+		Assets.mono13.drawMultiLine(batch, sb, 160, 280);
 
 		if (lander.maxGroundSpeed > 0){
 			if(Lander.getImpactResult(lander.maxGroundSpeed) == 0) Assets.mono13.setColor(Color.GREEN);
 			if(Lander.getImpactResult(lander.maxGroundSpeed) == 1) Assets.mono13.setColor(Color.YELLOW);
 			if(Lander.getImpactResult(lander.maxGroundSpeed) == 2) Assets.mono13.setColor(Color.RED);
-			Assets.mono13.draw(batch, "Est Contact Speed: " + nf.format(lander.maxGroundSpeed) + "m/s", 160, 125);
+			Assets.mono13.draw(batch, "Est Contact Speed: " + nf.format(lander.maxGroundSpeed) + "m/s", 160, 173);
 			Assets.mono13.setColor(Color.WHITE);
 		}
 
-		int yMod = -50;
+		int yMod = 15;
 
 		int i = 0;
 
@@ -252,10 +254,10 @@ public class InGameState extends GameState implements ContactListener {
 					if(controllerSelected != j){
 
 						if(controllerSelected == -1 && ent.getKey().ind == ind){
-							batch.draw(Assets.controllerHighlighted, 156, 123 - ((i + 1) * 16) + yMod - 3, 32, 16);
+							batch.draw(Assets.controllerHighlighted, 156, 123 - ((i + 1) * 16) + yMod, 32, 16);
 							selCon = j;
 						}else
-							batch.draw(Assets.controller, 156, 123 - ((i + 1) * 16) + yMod - 3, 32, 16);
+							batch.draw(Assets.controller, 156, 123 - ((i + 1) * 16) + yMod, 32, 16);
 
 						batch.setColor(Color.WHITE);
 					}
@@ -268,69 +270,70 @@ public class InGameState extends GameState implements ContactListener {
 			Assets.mono13.setColor(Color.WHITE);
 		}
 
+		if(ticksToRun <= 0){
 
+			if (controllerSelected == -1){
+				if(selCon != -1 && Gdx.input.isButtonPressed(Buttons.LEFT) && mouseHasBeenUp){
+					controllerSelected = selCon;
+					mouseHasBeenUp = false;
+				} else {
 
-		if (controllerSelected == -1){
-			if(selCon != -1 && Gdx.input.isButtonPressed(Buttons.LEFT) && mouseHasBeenUp){
-				controllerSelected = selCon;
-				mouseHasBeenUp = false;
-			} else {
+					if (Gdx.input.getX() > 190 + 400 && ind >= 0 && ind < Lander.Subsystem.values().length){
+						int tlx = (Gdx.input.getX() - 400);
+						int tly = (300 - Gdx.input.getY());
 
-				if (Gdx.input.getX() > 190 + 400 && ind >= 0 && ind < Lander.Subsystem.values().length){
-					int tlx = (Gdx.input.getX() - 400);
-					int tly = (300 - Gdx.input.getY());
+						batch.draw(Assets.tooltip, tlx, tly - 190, 150, 190);
 
-					batch.draw(Assets.tooltip, tlx, tly - 190, 150, 190);
+						Assets.mono16.draw(batch, Lander.Subsystem.values()[ind].name, tlx + 10, tly - 10);
 
-					Assets.mono16.draw(batch, Lander.Subsystem.values()[ind].name, tlx + 10, tly - 10);
+						Assets.mono13.setColor(Color.YELLOW);
+						Assets.mono13.drawWrapped(batch, "Yellow: " + Lander.Subsystem.values()[ind].descriptionAtYellow, tlx + 10, tly - 30, 130);
 
-					Assets.mono13.setColor(Color.YELLOW);
-					Assets.mono13.drawWrapped(batch, "Yellow: " + Lander.Subsystem.values()[ind].descriptionAtYellow, tlx + 10, tly - 30, 130);
+						Assets.mono13.setColor(Color.RED);
+						Assets.mono13.drawWrapped(batch, "Red: " + Lander.Subsystem.values()[ind].descriptionAtRed, tlx + 10, tly - 110, 130);
 
-					Assets.mono13.setColor(Color.RED);
-					Assets.mono13.drawWrapped(batch, "Red: " + Lander.Subsystem.values()[ind].descriptionAtRed, tlx + 10, tly - 110, 130);
+						Assets.mono13.setColor(Color.WHITE);
+					}
 
-					Assets.mono13.setColor(Color.WHITE);
-				}
+					if (Gdx.input.getX() > 160 + 400 && Gdx.input.getX() < 190 + 400 && ind >= 0 && ind < Lander.Subsystem.values().length){
+						for(int j=0;j<controllerPos.length;j++){
+							if(controllerPos[j] == ind){
 
-				if (Gdx.input.getX() > 160 + 400 && Gdx.input.getX() < 190 + 400 && ind >= 0 && ind < Lander.Subsystem.values().length){
-					for(int j=0;j<controllerPos.length;j++){
-						if(controllerPos[j] == ind){
-
+							}
 						}
 					}
 				}
-			}
-		} else {
-			if(Gdx.input.isButtonPressed(Buttons.RIGHT)){
-				controllerSelected = -1;
-			} else if(Gdx.input.isButtonPressed(Buttons.LEFT) && mouseHasBeenUp){
-				if(ind >= 0 && ind < lander.subsystemStatus.size()){
+			} else {
+				if(Gdx.input.isButtonPressed(Buttons.RIGHT)){
+					controllerSelected = -1;
+				} else if(Gdx.input.isButtonPressed(Buttons.LEFT) && mouseHasBeenUp){
+					if(ind >= 0 && ind < lander.subsystemStatus.size()){
 
-					boolean occupied = false;
+						boolean occupied = false;
 
-					for(int ix : controllerPos){
-						if(ix == ind) occupied = true;
+						for(int ix : controllerPos){
+							if(ix == ind) occupied = true;
+						}
+
+						if(!occupied)
+							controllerPos[controllerSelected] = ind;
+					}
+					mouseHasBeenUp = false;
+					controllerSelected = -1;
+				} else {
+					int tlx = (Gdx.input.getX() - 400);
+					int tly = (300 - Gdx.input.getY());
+
+					switch(controllerSelected){
+					case 0: batch.setColor(Color.RED); break;
+					case 1: batch.setColor(Color.GREEN); break;
+					case 2: batch.setColor(Color.BLUE); break;
 					}
 
-					if(!occupied)
-						controllerPos[controllerSelected] = ind;
+					batch.draw(Assets.controllerHighlighted, tlx - 16, tly - 8, 32, 16);
+
+					batch.setColor(Color.WHITE);
 				}
-				mouseHasBeenUp = false;
-				controllerSelected = -1;
-			} else {
-				int tlx = (Gdx.input.getX() - 400);
-				int tly = (300 - Gdx.input.getY());
-
-				switch(controllerSelected){
-				case 0: batch.setColor(Color.RED); break;
-				case 1: batch.setColor(Color.GREEN); break;
-				case 2: batch.setColor(Color.BLUE); break;
-				}
-
-				batch.draw(Assets.controllerHighlighted, tlx - 16, tly - 8, 32, 16);
-
-				batch.setColor(Color.WHITE);
 			}
 		}
 

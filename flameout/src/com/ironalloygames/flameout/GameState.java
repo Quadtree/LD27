@@ -108,12 +108,18 @@ public class GameState implements InputProcessor, ContactListener {
 
 		if(fadeStatus > 0){
 			//System.out.print(Math.min((float)fadeStatus / 60, 1) + " ");
-			batch.setBlendFunction(GL11.GL_ONE, GL11.GL_ONE_MINUS_SRC_ALPHA);
+
+			int f1 = batch.getBlendSrcFunc();
+			int f2 = batch.getBlendDstFunc();
+
+			batch.setBlendFunction(GL11.GL_ONE, GL11.GL_ONE);
 			batch.enableBlending();
 			batch.begin();
-			batch.setColor(1, 1, 1, Math.min((float)fadeStatus / 60, 1));
+			batch.setColor(1, 1, 1, 1 - Math.min((float)fadeStatus / 60, 1));
 			batch.draw(Assets.solid, -400, -300, 800, 600);
 			batch.end();
+
+			batch.setBlendFunction(f1, f2);
 
 			if(fadeStatus == 60){
 				fullyFaded();

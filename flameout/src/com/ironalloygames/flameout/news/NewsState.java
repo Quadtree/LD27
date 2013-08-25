@@ -100,6 +100,8 @@ public class NewsState extends GameState {
 			camera.rotate(MathUtils.random(0, 360));
 
 		camera.update();
+
+		super.update();
 	}
 
 
@@ -136,8 +138,14 @@ public class NewsState extends GameState {
 
 	@Override
 	public boolean keyDown(int keycode) {
-		FlameoutGame.game.setGameState(new InGameState());
+		beginFade();
 		return super.keyDown(keycode);
+	}
+
+	@Override
+	public void fullyFaded() {
+		FlameoutGame.game.setGameState(new InGameState());
+		super.fullyFaded();
 	}
 
 	@Override
