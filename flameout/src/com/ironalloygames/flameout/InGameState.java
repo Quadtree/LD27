@@ -357,6 +357,15 @@ public class InGameState extends GameState implements ContactListener {
 		batch.end();
 	}
 
+	@Override
+	public Speaker getController(Subsystem sub) {
+		if(controllerPos[0] == sub.ind) return Speaker.RED;
+		if(controllerPos[1] == sub.ind) return Speaker.GREEN;
+		if(controllerPos[2] == sub.ind) return Speaker.BLUE;
+
+		return Speaker.GREEN;
+	}
+
 	private void drawHelpScreen() {
 		batch.draw(Assets.solid, -750 / 2, -550 / 2, 750, 350);
 

@@ -28,11 +28,11 @@ public class DescentScreen extends GameState {
 
 		if(tm == 1) addMessage("Descent vector looks good.\nT minus 2 to final\nslowdown burn.", Speaker.BLUE);
 		if(tm == 20) addMessage("Got it!", Speaker.RED);
-		if(tm == 50) addMessage("Radar indicates the LZ is too rocky.\n", Speaker.GREEN);
+		if(tm == 130) addMessage("Radar indicates the LZ is too rocky.\n", Speaker.GREEN);
 		if(tm == 120){ addMessage("Ignition!", Speaker.RED); sp = Assets.landerEngineHigh.get(0); shake = true; }
-		if(tm == 260){ addMessage("We'll just keep flying\nuntil we find a new LZ.", Speaker.BLUE); }
+		if(tm == 300){ addMessage("We'll just keep flying\nuntil we find a new LZ.", Speaker.BLUE); }
 		if(tm == 280){ addMessage("Engine to hover power!", Speaker.RED); sp = Assets.landerEngineLow.get(0); shake = false; }
-		if(tm == 400) this.beginFade();
+		if(tm == 460) this.beginFade();
 
 		tm++;
 		ticksRun++;

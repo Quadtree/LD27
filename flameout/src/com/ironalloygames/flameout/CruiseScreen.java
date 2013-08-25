@@ -20,7 +20,7 @@ public class CruiseScreen extends GameState {
 		if(tm == 170) addMessage("Perfect! This mission\nis going great.", Speaker.RED);
 		if(tm == 190) addMessage("Don't jinx it.", Speaker.GREEN);
 		if(tm == 230) addMessage("Trajectory looks good. We're\non approach to the landing\nzone.", Speaker.BLUE);
-		if(tm == 380) beginFade();
+		if(tm == 450) beginFade();
 
 		if(tm == 120){
 			gr = 1;
@@ -58,8 +58,8 @@ public class CruiseScreen extends GameState {
 	}
 
 	@Override
-	public Vector2 getMessagePos() {
-		return new Vector2(-350, 250);
+	public Vector2 getMessagePos(){
+		return new Vector2(140, -40);
 	}
 
 }

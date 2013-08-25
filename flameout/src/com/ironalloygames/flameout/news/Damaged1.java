@@ -20,8 +20,8 @@ public class Damaged1 extends NewsStory {
 		});
 
 		text = "The space agency's " + MathUtils.random(25, 320) + " million dollar lander crash-landed on its destination. " +
-				"Most of its scientific instruments were destroyed, but officals said that " +
-				rStr(new String[]{"", "it was possible that", "there was a small chance that"}) + " at least one " + rStr(new String[]{"instrument", "system", "component"}) + " survived." +
+				"Most of its scientific instruments were destroyed, but officals said that" +
+				rStr(new String[]{" ", " it was possible that", " there was a small chance that"}) + " at least one " + rStr(new String[]{"instrument", "system", "component"}) + " survived." +
 				"\n\nAn agency spokesperson declined to comment.";
 
 		if (img == null){

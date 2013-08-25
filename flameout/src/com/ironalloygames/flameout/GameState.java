@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.World;
+import com.ironalloygames.flameout.Lander.Subsystem;
 
 public class GameState implements InputProcessor, ContactListener {
 
@@ -44,7 +45,7 @@ public class GameState implements InputProcessor, ContactListener {
 		SpokenMessage sm = new SpokenMessage();
 		sm.message = message;
 		sm.speaker = speaker;
-		sm.ticks = (message.length()*4 + 30);
+		sm.ticks = (message.length()*4 + 30) * 3 / 2;
 		sm.lineBreaks = message.split("\n").length;
 
 		messages.add(sm);
@@ -211,5 +212,9 @@ public class GameState implements InputProcessor, ContactListener {
 
 	protected void drawTextCentered(BitmapFont font, String s, int x, int y, int wrapWidth){
 		font.drawWrapped(batch, s, x - font.getWrappedBounds(s, wrapWidth).width / 2, y, wrapWidth);
+	}
+
+	public Speaker getController(Subsystem sub){
+		return Speaker.GREEN;
 	}
 }

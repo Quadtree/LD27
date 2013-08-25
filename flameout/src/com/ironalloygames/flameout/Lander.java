@@ -215,21 +215,21 @@ public class Lander extends Actor {
 			if(!state.canSubsystemBreak(ent.getKey()) && MathUtils.randomBoolean(0.3f / 60) && ent.getValue() > 0){
 				ent.setValue(ent.getValue() - 1);
 
-				if(ent.getKey() == Subsystem.COMMS && ent.getValue() == 0) state.addMessage("R/C system in the green!", Speaker.GREEN);
+				if(ent.getKey() == Subsystem.COMMS && ent.getValue() == 0) state.addMessage("R/C system in the green!", state.getController(ent.getKey()));
 
-				if(ent.getKey() == Subsystem.CONTROL && ent.getValue() == 0) state.addMessage("Whew, my controls are stable\nagain.", Speaker.RED);
-				if(ent.getKey() == Subsystem.CONTROL && ent.getValue() == 1) state.addMessage("That's better... A bit.", Speaker.RED);
+				if(ent.getKey() == Subsystem.CONTROL && ent.getValue() == 0) state.addMessage("Controls fixed...", state.getController(ent.getKey()));
+				if(ent.getKey() == Subsystem.CONTROL && ent.getValue() == 1) state.addMessage("That's better... A bit.", state.getController(ent.getKey()));
 
-				if(ent.getKey() == Subsystem.ENGINE && ent.getValue() == 0) state.addMessage("Engine's back in the green.", Speaker.GREEN);
-				if(ent.getKey() == Subsystem.ENGINE && ent.getValue() == 1) state.addMessage("I've restored some engine power.", Speaker.GREEN);
+				if(ent.getKey() == Subsystem.ENGINE && ent.getValue() == 0) state.addMessage("Engine's back in the green.", state.getController(ent.getKey()));
+				if(ent.getKey() == Subsystem.ENGINE && ent.getValue() == 1) state.addMessage("I've restored some engine power.", state.getController(ent.getKey()));
 
-				if(ent.getKey() == Subsystem.FUEL && ent.getValue() == 0) state.addMessage("Fuel leak fixed.", Speaker.GREEN);
-				if(ent.getKey() == Subsystem.FUEL && ent.getValue() == 1) state.addMessage("Fuel leak is smaller.", Speaker.GREEN);
+				if(ent.getKey() == Subsystem.FUEL && ent.getValue() == 0) state.addMessage("Fuel leak fixed.", state.getController(ent.getKey()));
+				if(ent.getKey() == Subsystem.FUEL && ent.getValue() == 1) state.addMessage("Fuel leak is smaller.", state.getController(ent.getKey()));
 
-				if(ent.getKey() == Subsystem.LEGS && ent.getValue() == 0) state.addMessage("Legs back out.", Speaker.GREEN);
+				if(ent.getKey() == Subsystem.LEGS && ent.getValue() == 0) state.addMessage("Legs back out.", state.getController(ent.getKey()));
 
-				if(ent.getKey() == Subsystem.THRUSTER && ent.getValue() == 0) state.addMessage("RCS back to normal.", Speaker.GREEN);
-				if(ent.getKey() == Subsystem.THRUSTER && ent.getValue() == 1) state.addMessage("I've restored half of the RCS\npower.", Speaker.GREEN);
+				if(ent.getKey() == Subsystem.THRUSTER && ent.getValue() == 0) state.addMessage("RCS back to normal.", state.getController(ent.getKey()));
+				if(ent.getKey() == Subsystem.THRUSTER && ent.getValue() == 1) state.addMessage("I've restored half of the RCS\npower.", state.getController(ent.getKey()));
 			}
 		}
 
