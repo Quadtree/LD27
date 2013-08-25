@@ -139,9 +139,11 @@ public class InGameState extends GameState implements ContactListener {
 			ticksToRun = 10;
 
 			if(gameOverTime == 1){
-
+				beginFade();
 			}
 		}
+
+		if(lander.destroyed && gameOverTime == 0) gameOverTime = 180;
 
 		if(lander.destroyed) ticksToRun = 10;
 
@@ -151,8 +153,12 @@ public class InGameState extends GameState implements ContactListener {
 
 		if(ticksToRun > 0){
 			super.update();
-			tickMessages();
-			tickMessages();
+
+			if(!lander.destroyed){
+				tickMessages();
+				tickMessages();
+			}
+
 			ticksToRun--;
 			ticksRun++;
 		}
