@@ -50,7 +50,7 @@ public class GameState implements InputProcessor, ContactListener {
 
 		messages.add(sm);
 
-		Assets.messageSound.setVolume(Assets.messageSound.play(), 0.05f);
+		Assets.messageSound.setVolume(Assets.messageSound.play(), 0.5f);
 	}
 
 	ArrayList<SpokenMessage> messages = new ArrayList<SpokenMessage>();
