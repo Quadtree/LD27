@@ -22,8 +22,12 @@ public class FlameoutGame implements ApplicationListener {
 
 	long msElapsed;
 
+	public static FlameoutGame game;
+
 	@Override
 	public void create() {
+		game = this;
+
 		/*float w = Gdx.graphics.getWidth();
 		float h = Gdx.graphics.getHeight();
 
@@ -43,11 +47,15 @@ public class FlameoutGame implements ApplicationListener {
 		Assets.load();
 
 		//currentGameState = new InGameState().created();
-		currentGameState = new NewsState(NewsStory.Tag.DESTROYED).created();
-
-		Gdx.input.setInputProcessor(currentGameState);
+		setGameState(new NewsState(NewsStory.Tag.DAMAGED));
 
 		msElapsed = System.currentTimeMillis();
+	}
+
+	public void setGameState(GameState state){
+		currentGameState = state.created();
+
+		Gdx.input.setInputProcessor(currentGameState);
 	}
 
 	@Override

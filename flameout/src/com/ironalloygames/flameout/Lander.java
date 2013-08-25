@@ -56,7 +56,7 @@ public class Lander extends Actor {
 
 	public static int getImpactResult(float speed){
 		if(speed > 15) return 2;
-		if(speed > 4) return 1;
+		if(speed > 6) return 1;
 		return 0;
 	}
 

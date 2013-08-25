@@ -8,7 +8,9 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.MathUtils;
+import com.ironalloygames.flameout.FlameoutGame;
 import com.ironalloygames.flameout.GameState;
+import com.ironalloygames.flameout.InGameState;
 import com.ironalloygames.flameout.news.NewsStory.Tag;
 
 public class NewsState extends GameState {
@@ -28,9 +30,17 @@ public class NewsState extends GameState {
 		return options[rand.nextInt(options.length)];
 	}
 
+	@Override
+	public GameState created() {
+		Gdx.input.setInputProcessor(this);
+		return super.created();
+	}
+
 	public NewsState(Tag leadingStoryTag){
 		NewsStory[] stories = {
-				new Crash1(),
+				//new Crash1(),
+				new Crash2(),
+				new Damaged1(),
 				new BillStalled()
 		};
 
@@ -93,16 +103,15 @@ public class NewsState extends GameState {
 
 		batch.draw(background, -background.getWidth() / 2, -background.getHeight() / 2);
 
-
 		drawTextCentered(subheadline, newspaperName, 0, 263, 544);
 
-		drawTextCentered(headline, leadingStory.headline, 0, 230, 544);
+		drawTextCentered(headline, leadingStory.headline, 0, 220, 544);
 
 		drawTextCentered(subheadline, leadingStory.subheadline, 0, 175, 544);
 
 		regular.setColor(Color.BLACK);
 
-		regular.drawWrapped(batch, leadingStory.text, -255, 95, 230);
+		regular.drawWrapped(batch, leadingStory.text, -255, 95, 220);
 
 		drawTextCentered(subheadline, secondStory.headline, -20 + (270 / 2), -90, 270);
 
@@ -116,6 +125,12 @@ public class NewsState extends GameState {
 			regular.draw(batch, "Press any Key to Restart", -100, -280);
 
 		batch.end();
+	}
+
+	@Override
+	public boolean keyDown(int keycode) {
+		FlameoutGame.game.setGameState(new InGameState());
+		return super.keyDown(keycode);
 	}
 
 

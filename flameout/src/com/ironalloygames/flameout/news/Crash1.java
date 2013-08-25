@@ -10,7 +10,7 @@ public class Crash1 extends NewsStory {
 	static Texture img;
 
 	public Crash1(){
-		headline = "Lander " + rStr(new String[]{"Obliterated", "Annihilated", "Bursted", "Smashed"});
+		headline = "Lander " + rStr(new String[]{"Obliterated", "Annihilated", "Bursted", "Smashed"}) + " in Crash";
 
 		subheadline = rStr(new String[]{
 				"Head of Space Program: " + rStr(new String[]{
@@ -28,7 +28,6 @@ public class Crash1 extends NewsStory {
 			image = new Sprite(new Texture(Gdx.files.internal("lander_destroyed.png")));
 		}
 
-		tags.add(Tag.DAMAGED);
 		tags.add(Tag.DESTROYED);
 	}
 }
