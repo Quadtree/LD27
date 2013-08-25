@@ -5,14 +5,14 @@ filter: Nearest,Nearest
 repeat: none
 controller
   rotate: false
-  xy: 782, 912
+  xy: 2, 2
   size: 32, 16
   orig: 32, 16
   offset: 0, 0
   index: -1
 controller_glow
   rotate: false
-  xy: 2, 2
+  xy: 132, 132
   size: 32, 16
   orig: 32, 16
   offset: 0, 0
@@ -199,9 +199,16 @@ pebble
   orig: 64, 64
   offset: 0, 0
   index: -1
-tooltip
+solid
   rotate: false
   xy: 652, 773
+  size: 25, 25
+  orig: 25, 25
+  offset: 0, 0
+  index: -1
+tooltip
+  rotate: false
+  xy: 782, 903
   size: 25, 25
   orig: 25, 25
   offset: 0, 0

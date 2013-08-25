@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.GL11;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -24,12 +25,16 @@ public class GameState implements InputProcessor, ContactListener {
 		BLUE
 	}
 
+	int fadeStatus = 0;
+
 	class SpokenMessage {
 		public String message;
 		public Speaker speaker;
 		public int ticks;
 		public int lineBreaks;
 	}
+
+	protected void beginFade(){ fadeStatus = Math.max(fadeStatus, 1); }
 
 	public Vector2 getMessagePos(){
 		return new Vector2(250, 0);
@@ -70,6 +75,8 @@ public class GameState implements InputProcessor, ContactListener {
 				messages.remove(i--);
 			}
 		}
+
+		if(fadeStatus > 0) fadeStatus++;
 	}
 
 	public void renderMessages(){
@@ -88,7 +95,23 @@ public class GameState implements InputProcessor, ContactListener {
 			y -= messages.get(i).lineBreaks * 23;
 		}
 		batch.end();
+
+		if(fadeStatus > 0){
+			//System.out.print(Math.min((float)fadeStatus / 60, 1) + " ");
+			batch.setBlendFunction(GL11.GL_ONE, GL11.GL_ONE_MINUS_SRC_ALPHA);
+			batch.enableBlending();
+			batch.begin();
+			batch.setColor(1, 1, 1, Math.min((float)fadeStatus / 60, 1));
+			batch.draw(Assets.solid, -400, -300, 800, 600);
+			batch.end();
+
+			if(fadeStatus == 60){
+				fullyFaded();
+			}
+		}
 	}
+
+	public void fullyFaded(){}
 
 	public void render(){
 		for(Actor a : actors){

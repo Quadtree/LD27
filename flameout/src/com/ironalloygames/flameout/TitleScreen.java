@@ -48,6 +48,10 @@ public class TitleScreen extends GameState {
 		batch.begin();
 
 		if(launchStatus > 500){
+			this.beginFade();
+		}
+
+		/*if(launchStatus > 500){
 
 			System.out.println(1 - ((float)launchStatus - 500) / 60);
 
@@ -61,7 +65,7 @@ public class TitleScreen extends GameState {
 
 		if(launchStatus > 558){
 			FlameoutGame.game.setGameState(new InGameState());
-		}
+		}*/
 
 		batch.draw(Assets.launchScreen[gr], -400, -300);
 
@@ -78,6 +82,12 @@ public class TitleScreen extends GameState {
 		batch.end();
 
 		super.render();
+	}
+
+	@Override
+	public void fullyFaded() {
+		FlameoutGame.game.setGameState(new InGameState());
+		super.fullyFaded();
 	}
 
 	@Override

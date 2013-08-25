@@ -34,6 +34,8 @@ public class Assets {
 	public static BitmapFont borderedLarge;
 	public static BitmapFont borderedSmall;
 
+	public static Sprite solid;
+
 	public static void load(){
 		atlas = new TextureAtlas(Gdx.files.internal("atlas.atlas"));
 
@@ -51,6 +53,7 @@ public class Assets {
 
 		pebble = atlas.createSprite("pebble");
 		tooltip = atlas.createSprite("tooltip");
+		solid = atlas.createSprite("solid");
 		controller = atlas.createSprite("controller");
 		controllerHighlighted = atlas.createSprite("controller_glow");
 
@@ -67,6 +70,8 @@ public class Assets {
 
 		borderedLarge = new BitmapFont(Gdx.files.internal("large-bordered.fnt"), Gdx.files.internal("large-bordered_00.png"), false);
 		borderedSmall = new BitmapFont(Gdx.files.internal("small-bordered.fnt"), Gdx.files.internal("small-bordered_00.png"), false);
+
+
 
 		System.out.println("Load done");
 	}
