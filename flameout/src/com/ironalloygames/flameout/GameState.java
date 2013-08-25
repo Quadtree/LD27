@@ -71,7 +71,7 @@ public class GameState implements InputProcessor, ContactListener {
 		}
 
 		for(int i=0;i<messages.size();i++){
-			if(messages.get(i).ticks-- == 0){
+			if(messages.get(i).ticks-- == 0 && i == 0){
 				messages.remove(i--);
 			}
 		}

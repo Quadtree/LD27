@@ -39,9 +39,9 @@ public class Lander extends Actor {
 	float ghost1Angle = 0;
 	float ghost2Angle = 0;
 
-	int curLegStatus = 60;
+	int curLegStatus = 0;
 
-	public float fuel = 10;
+	public float fuel = 13;
 
 	public Vector2 ghost1Velocity = new Vector2();
 	public Vector2 ghost2Velocity = new Vector2();
@@ -52,7 +52,7 @@ public class Lander extends Actor {
 
 	public EnumMap<Subsystem, Integer> subsystemStatus = new EnumMap<Subsystem, Integer>(Subsystem.class);
 
-	public boolean commandedLegPosition = true;
+	public boolean commandedLegPosition = false;
 
 	public static int getImpactResult(float speed){
 		if(speed > 15) return 2;
@@ -100,8 +100,8 @@ public class Lander extends Actor {
 			subsystemStatus.put(sub, 0);
 		}
 
-		body.setTransform(new Vector2(100 * (4.f / 7.f),110 * (4.f / 7.f)), -0.5f);
-		body.setLinearVelocity(-6, 6);
+		body.setTransform(new Vector2(150 * (4.f / 7.f),170 * (4.f / 7.f)), -0.5f);
+		body.setLinearVelocity(-18, -18);
 
 		this.rebuildGhostPositions();
 

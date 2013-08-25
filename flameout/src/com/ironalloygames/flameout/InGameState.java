@@ -28,8 +28,9 @@ public class InGameState extends GameState implements ContactListener {
 	public OrthographicCamera camera;
 	public OrthographicCamera uiCamera;
 
-	public int ticksToRun = 60;
+	public int ticksToRun = 180;
 	int ticksRun = (86400 * 18 + 39584) * 60;
+	int ticks = 0;
 
 	Lander lander;
 
@@ -114,7 +115,9 @@ public class InGameState extends GameState implements ContactListener {
 
 		uiCamera = new OrthographicCamera(800,600);
 
+		addMessage("13 seconds of fuel.\nSet us down quickly.", Speaker.GREEN);
 
+		lander.thrusterPower = new Vector2(0, 0.5f);
 
 		return super.created();
 	}
@@ -122,6 +125,14 @@ public class InGameState extends GameState implements ContactListener {
 	@Override
 	public void update() {
 		if(lander.subsystemStatus.get(Lander.Subsystem.COMMS) == 2) ticksToRun = 10;
+
+		ticks++;
+
+		if(ticks == 30) addMessage("This area looks flat\nenough. Set us down.", Speaker.BLUE);
+		if(ticks == 40) addMessage("Got it!", Speaker.RED);
+		if(ticks == 65){ addMessage("Extending legs.", Speaker.GREEN); lander.commandedLegPosition = true; }
+		if(ticks == 120) addMessage("Looks like we have this one in the bag.", Speaker.RED);
+		if(ticks == 180) addMessage("10 seconds of fuel,\njust saying.", Speaker.GREEN);
 
 		if(gameOverTime > 0){
 			gameOverTime--;
@@ -165,6 +176,13 @@ public class InGameState extends GameState implements ContactListener {
 	public void render() {
 		camera.setToOrtho(false, 800 / 7, 600 / 7);
 
+		batch.setProjectionMatrix(uiCamera.combined);
+		batch.begin();
+
+		batch.draw(Assets.starfield, -400, -300, 800, 600);
+
+		batch.end();
+
 		batch.setProjectionMatrix(camera.combined);
 		batch.begin();
 
@@ -184,7 +202,7 @@ public class InGameState extends GameState implements ContactListener {
 		NumberFormat nf = NumberFormat.getNumberInstance();
 		nf.setMaximumFractionDigits(1);
 
-		sb.append(String.format("Mission Time: %02d:%02d:%02d:%02d:%02d\n", (ticksRun / 60 / 60 / 60 / 24 / 30), (ticksRun / 60 / 60 / 60 / 24) % 30, (ticksRun / 60 / 60 / 60) % 24, (ticksRun / 60 / 60) % 60, (ticksRun / 60) % 60));
+		sb.append(String.format("Mission Time: %02d:%02d:%02d:%02d\n", (ticksRun / 60 / 60 / 60 / 24 / 30), (ticksRun / 60 / 60 / 60 / 24) % 30, (ticksRun / 60 / 60 / 60) % 24, (ticksRun / 60 / 60) % 60, (ticksRun / 60) % 60));
 
 		sb.append("Vel: " + nf.format(lander.body.getLinearVelocity().len()) + " (" + nf.format(lander.body.getLinearVelocity().x) + ", " + nf.format(lander.body.getLinearVelocity().y) + ") m/s\n");
 		sb.append("Vel +1s: " + nf.format(lander.ghost1Velocity.len()) + " (" + nf.format(lander.ghost1Velocity.x) + ", " + nf.format(lander.ghost1Velocity.y) + ") m/s\n");
@@ -224,10 +242,10 @@ public class InGameState extends GameState implements ContactListener {
 					if(controllerSelected != j){
 
 						if(controllerSelected == -1 && ent.getKey().ind == ind){
-							batch.draw(Assets.controllerHighlighted, 156, 123 - ((i + 1) * 16) + yMod, 32, 16);
+							batch.draw(Assets.controllerHighlighted, 156, 123 - ((i + 1) * 16) + yMod - 3, 32, 16);
 							selCon = j;
 						}else
-							batch.draw(Assets.controller, 156, 123 - ((i + 1) * 16) + yMod, 32, 16);
+							batch.draw(Assets.controller, 156, 123 - ((i + 1) * 16) + yMod - 3, 32, 16);
 
 						batch.setColor(Color.WHITE);
 					}
@@ -325,6 +343,8 @@ public class InGameState extends GameState implements ContactListener {
 	public boolean keyDown(int keycode) {
 		if (ticksToRun != 0) return false;
 
+		System.out.println("X");
+
 		if (keycode == Keys.X){ lander.thrusterPower.set(0,0); lander.rebuildGhostPositions(); }
 
 		if (keycode == Keys.ENTER) ticksToRun = 60;
@@ -357,5 +377,8 @@ public class InGameState extends GameState implements ContactListener {
 		super.endContact(contact);
 	}
 
-
+	@Override
+	public Vector2 getMessagePos() {
+		return new Vector2(-350, 250);
+	}
 }

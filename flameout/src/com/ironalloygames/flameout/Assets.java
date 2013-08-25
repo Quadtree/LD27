@@ -37,6 +37,8 @@ public class Assets {
 
 	public static Sprite solid;
 
+	public static Texture starfield;
+
 	public static void load(){
 		atlas = new TextureAtlas(Gdx.files.internal("atlas.atlas"));
 
@@ -57,6 +59,8 @@ public class Assets {
 		solid = atlas.createSprite("solid");
 		controller = atlas.createSprite("controller");
 		controllerHighlighted = atlas.createSprite("controller_glow");
+
+		starfield = new Texture(Gdx.files.internal("starfield.png"));
 
 		newspaperBackground = new Sprite(new Texture(Gdx.files.internal("newspaper-background.png")));
 
