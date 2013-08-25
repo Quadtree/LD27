@@ -100,7 +100,7 @@ public class InGameState extends GameState implements ContactListener {
 
 			Vector2 delta = rayEnd.cpy().sub(rayStart).nor();
 
-			System.out.println(delta);
+			//System.out.println(delta);
 
 			world.rayCast(new RayCastCallback(){
 
@@ -114,7 +114,7 @@ public class InGameState extends GameState implements ContactListener {
 
 			float size = MathUtils.random(0.7f, 1.5f);
 
-			System.out.println("PICK'D " + lastIntersection);
+			//System.out.println("PICK'D " + lastIntersection);
 
 			addPebble(lastIntersection.cpy().add(delta.scl(-size)), size);
 		}
@@ -379,10 +379,10 @@ public class InGameState extends GameState implements ContactListener {
 		Assets.mono13.drawWrapped(batch,
 				"The object of this game is to get the lander down onto the grey terrain at the bottom of the screen, and bring it to a total stop. " +
 						"The \"ghosts\" of your lander indicate where it will be in the next two turns, assuming that you cut all power after the first turn. " +
-						"\n\nAs you descend, shoddy lander construction will cause systems to fail. On the middle right is a display of your six subsystems: Thrusters, Engines, Comm, Control, Legs and Fuel. " +
-						"\n\nThe colored markers to their left indicate that a ground crew member is monitoring that system. As long as a system is monitored, it will not fail further, and the crew member will repair it over time. " +
-						"To move a crewmember to a different system, click on them and click on the system you want them to monitor. " +
-						"\n\nMouseover a system to find out what happens if it fails." +
+						"\n\nAs you descend, shoddy lander construction will cause subsystems to fail. On the middle right is a display of your six subsystems: Thrusters, Engines, Comm, Control, Legs and Fuel. " +
+						"\n\nThe colored markers to their left indicate that a ground crew member is monitoring that subsystem. As long as a subsystem is monitored, it will not fail further, and the crew member will repair it over time. " +
+						"To move a crewmember to a different subsystem, click on them and click on the subsystem you want them to monitor. " +
+						"Mouseover a subsystem to find out what happens if it fails." +
 						"\n\nKey Commands" +
 						"\nWASD/Cursor Keys...............Change Thrust" +
 						"\nShift + Thrust Key.............Minor Thrust Change" +
@@ -428,7 +428,7 @@ public class InGameState extends GameState implements ContactListener {
 
 		if (ticksToRun != 0) return false;
 
-		System.out.println("X");
+		//System.out.println("X");
 
 		if (keycode == Keys.X){ lander.thrusterPower.set(0,0); lander.rebuildGhostPositions(); }
 
