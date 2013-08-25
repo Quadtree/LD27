@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Contact;
+import com.ironalloygames.flameout.GameState.Speaker;
 
 public class Lander extends Actor {
 
@@ -60,6 +61,8 @@ public class Lander extends Actor {
 		return 0;
 	}
 
+	boolean thrownOffFragments = false;
+
 	@Override
 	public void render() {
 		super.render();
@@ -74,21 +77,36 @@ public class Lander extends Actor {
 			graphics = Assets.landerEngineLow;
 		}
 
-		state.batch.draw(
-				graphics.get(curLegStatus / 8), body.getPosition().x, body.getPosition().y,
-				0.5f, 0.5f, 1, 1, getHalfSize() * 2, getHalfSize() * 2, body.getAngle() * (180 / MathUtils.PI) - 90, false
-				);
+		if(!thrownOffFragments && destroyed){
+			thrownOffFragments = true;
 
-		state.batch.draw(
-				Assets.landerOutline, ghost1Pos.x, ghost1Pos.y,
-				0.5f, 0.5f, 1, 1, getHalfSize() * 2, getHalfSize() * 2, ghost1Angle * (180 / MathUtils.PI) - 90, false
-				);
+			for(int i=0;i<50;i++){
+				Actor a = new Fragment();
+				state.actorAddQueue.add(a.created(state));
 
-		state.batch.draw(
-				Assets.landerOutline, ghost2Pos.x, ghost2Pos.y,
-				0.5f, 0.5f, 1, 1, getHalfSize() * 2, getHalfSize() * 2, ghost2Angle * (180 / MathUtils.PI) - 90, false
-				);
+				a.body.setTransform(body.getPosition(), MathUtils.random(0, 7));
+			}
 
+			state.addMessage("Oh no!", Speaker.RED);
+			state.addMessage("I knew this would happen!", Speaker.GREEN);
+		}
+
+		if(!destroyed){
+			state.batch.draw(
+					graphics.get(curLegStatus / 8), body.getPosition().x, body.getPosition().y,
+					0.5f, 0.5f, 1, 1, getHalfSize() * 2, getHalfSize() * 2, body.getAngle() * (180 / MathUtils.PI) - 90, false
+					);
+
+			state.batch.draw(
+					Assets.landerOutline, ghost1Pos.x, ghost1Pos.y,
+					0.5f, 0.5f, 1, 1, getHalfSize() * 2, getHalfSize() * 2, ghost1Angle * (180 / MathUtils.PI) - 90, false
+					);
+
+			state.batch.draw(
+					Assets.landerOutline, ghost2Pos.x, ghost2Pos.y,
+					0.5f, 0.5f, 1, 1, getHalfSize() * 2, getHalfSize() * 2, ghost2Angle * (180 / MathUtils.PI) - 90, false
+					);
+		}
 
 	}
 
@@ -119,6 +137,8 @@ public class Lander extends Actor {
 
 	@Override
 	public void update() {
+		if(destroyed) return;
+
 		this.applyEngineForce();
 
 		this.actualThrusterPower.set(thrusterPower);
@@ -150,10 +170,43 @@ public class Lander extends Actor {
 
 		for(Entry<Subsystem, Integer> ent : subsystemStatus.entrySet()){
 			if(state.canSubsystemBreak(ent.getKey()) && MathUtils.randomBoolean(0.15f / 60) && ent.getValue() < 2){
-				//ent.setValue(ent.getValue() + 1);
+				ent.setValue(ent.getValue() + 1);
+
+				if(ent.getKey() == Subsystem.COMMS && ent.getValue() == 1) state.addMessage("I'm getting a worrying amount\nof static in the R/C system!", Speaker.GREEN);
+				if(ent.getKey() == Subsystem.COMMS && ent.getValue() == 2) state.addMessage("I've got no control!!!", Speaker.RED);
+
+				if(ent.getKey() == Subsystem.CONTROL && ent.getValue() == 1) state.addMessage("Whoa, something is wrong\nwith the control system!", Speaker.RED);
+				if(ent.getKey() == Subsystem.CONTROL && ent.getValue() == 2) state.addMessage("I didn't do that! What's\nhappening?!?!", Speaker.RED);
+
+				if(ent.getKey() == Subsystem.ENGINE && ent.getValue() == 1) state.addMessage("We're losing engine power.", Speaker.GREEN);
+				if(ent.getKey() == Subsystem.ENGINE && ent.getValue() == 2) state.addMessage("Main engine is offline.", Speaker.GREEN);
+
+				if(ent.getKey() == Subsystem.FUEL && ent.getValue() == 1) state.addMessage("Fuel leak.", Speaker.GREEN);
+				if(ent.getKey() == Subsystem.FUEL && ent.getValue() == 2) state.addMessage("Fuel leak has gotten larger...", Speaker.GREEN);
+
+				if(ent.getKey() == Subsystem.LEGS && ent.getValue() == 1) state.addMessage("The legs have retracted!", Speaker.GREEN);
+
+				if(ent.getKey() == Subsystem.THRUSTER && ent.getValue() == 1) state.addMessage("RCS power down to 50%.", Speaker.GREEN);
+				if(ent.getKey() == Subsystem.THRUSTER && ent.getValue() == 2) state.addMessage("We've lost all RCS power.", Speaker.GREEN);
 			}
 			if(!state.canSubsystemBreak(ent.getKey()) && MathUtils.randomBoolean(0.3f / 60) && ent.getValue() > 0){
 				ent.setValue(ent.getValue() - 1);
+
+				if(ent.getKey() == Subsystem.COMMS && ent.getValue() == 0) state.addMessage("R/C system in the green!", Speaker.GREEN);
+
+				if(ent.getKey() == Subsystem.CONTROL && ent.getValue() == 0) state.addMessage("Whew, my controls are stable\nagain.", Speaker.RED);
+				if(ent.getKey() == Subsystem.CONTROL && ent.getValue() == 1) state.addMessage("That's better... A bit.", Speaker.RED);
+
+				if(ent.getKey() == Subsystem.ENGINE && ent.getValue() == 0) state.addMessage("Engine's back in the green.", Speaker.GREEN);
+				if(ent.getKey() == Subsystem.ENGINE && ent.getValue() == 1) state.addMessage("I've restored some engine power.", Speaker.GREEN);
+
+				if(ent.getKey() == Subsystem.FUEL && ent.getValue() == 0) state.addMessage("Fuel leak fixed.", Speaker.GREEN);
+				if(ent.getKey() == Subsystem.FUEL && ent.getValue() == 1) state.addMessage("Fuel leak is smaller.", Speaker.GREEN);
+
+				if(ent.getKey() == Subsystem.LEGS && ent.getValue() == 0) state.addMessage("Legs back out.", Speaker.GREEN);
+
+				if(ent.getKey() == Subsystem.THRUSTER && ent.getValue() == 0) state.addMessage("RCS back to normal.", Speaker.GREEN);
+				if(ent.getKey() == Subsystem.THRUSTER && ent.getValue() == 1) state.addMessage("I've restored half of the RCS\npower.", Speaker.GREEN);
 			}
 		}
 
@@ -180,9 +233,20 @@ public class Lander extends Actor {
 	public void groundCollision(){
 		if(Lander.getImpactResult(body.getLinearVelocity().len()) == 2){ destroyed = true; System.out.println("Destroyed at " + body.getLinearVelocity().len()); }
 		if(Lander.getImpactResult(body.getLinearVelocity().len()) == 1){  damaged = true; System.out.println("Damaged at " + body.getLinearVelocity().len()); }
+
+		float ang = body.getAngle();
+
+		while(ang > MathUtils.PI2) ang -= MathUtils.PI2;
+		while(ang < -MathUtils.PI2) ang += MathUtils.PI2;
+
+		if(ang > MathUtils.PI / 2 || ang < -MathUtils.PI / 2) destroyed = true;
+
+		if(curLegStatus < 50) destroyed = true;
 	}
 
 	public void rebuildGhostPositions(){
+		if(destroyed) return;
+
 		Vector2 pos = body.getPosition().cpy();
 		float ang = body.getAngle();
 		Vector2 linVel = body.getLinearVelocity().cpy();

@@ -56,6 +56,8 @@ public class GameState implements InputProcessor, ContactListener {
 	public World world;
 	public SpriteBatch batch;
 
+	public ArrayList<Actor> actorAddQueue = new ArrayList<Actor>();
+
 	public boolean canSubsystemBreak(Lander.Subsystem sub){ return false; }
 
 	public GameState created(){
@@ -66,17 +68,26 @@ public class GameState implements InputProcessor, ContactListener {
 	public void update(){
 		if (world != null) world.step(0.016f, 4, 4);
 
+		while(actorAddQueue.size() > 0){
+			actors.add(actorAddQueue.get(0));
+			actorAddQueue.remove(0);
+		}
+
 		for(int i=0;i<actors.size();i++){
 			actors.get(i).update();
 		}
 
+		tickMessages();
+
+		if(fadeStatus > 0) fadeStatus++;
+	}
+
+	protected void tickMessages() {
 		for(int i=0;i<messages.size();i++){
-			if(messages.get(i).ticks-- == 0 && i == 0){
+			if(messages.get(i).ticks-- <= 0 && i == 0){
 				messages.remove(i--);
 			}
 		}
-
-		if(fadeStatus > 0) fadeStatus++;
 	}
 
 	public void renderMessages(){

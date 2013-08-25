@@ -143,12 +143,16 @@ public class InGameState extends GameState implements ContactListener {
 			}
 		}
 
+		if(lander.destroyed) ticksToRun = 10;
+
 		if(ticksToRun == 1){
 			lander.rebuildGhostPositions();
 		}
 
 		if(ticksToRun > 0){
 			super.update();
+			tickMessages();
+			tickMessages();
 			ticksToRun--;
 			ticksRun++;
 		}
@@ -192,6 +196,8 @@ public class InGameState extends GameState implements ContactListener {
 
 		batch.end();
 
+		if(lander.destroyed) return;
+
 		batch.setProjectionMatrix(uiCamera.combined);
 		batch.begin();
 
@@ -216,7 +222,7 @@ public class InGameState extends GameState implements ContactListener {
 			if(Lander.getImpactResult(lander.maxGroundSpeed) == 0) Assets.mono13.setColor(Color.GREEN);
 			if(Lander.getImpactResult(lander.maxGroundSpeed) == 1) Assets.mono13.setColor(Color.YELLOW);
 			if(Lander.getImpactResult(lander.maxGroundSpeed) == 2) Assets.mono13.setColor(Color.RED);
-			Assets.mono13.draw(batch, "Est Contact Speed: " + nf.format(lander.maxGroundSpeed) + "m/s", 160, 145);
+			Assets.mono13.draw(batch, "Est Contact Speed: " + nf.format(lander.maxGroundSpeed) + "m/s", 160, 125);
 			Assets.mono13.setColor(Color.WHITE);
 		}
 
@@ -335,9 +341,13 @@ public class InGameState extends GameState implements ContactListener {
 
 	@Override
 	public void fullyFaded() {
+
+		System.out.println("fully faded");
+
 		if(lander.destroyed) FlameoutGame.game.setGameState(new NewsState(NewsStory.Tag.DESTROYED));
 		else if(lander.damaged) FlameoutGame.game.setGameState(new NewsState(NewsStory.Tag.DAMAGED));
 		else FlameoutGame.game.setGameState(new NewsState(NewsStory.Tag.PERFECT));
+
 		super.fullyFaded();
 	}
 
@@ -366,6 +376,9 @@ public class InGameState extends GameState implements ContactListener {
 
 	@Override
 	public boolean canSubsystemBreak(Subsystem sub) {
+
+		if(ticks < 180) return false;
+
 		for(int ts : controllerPos){
 			if(ts == sub.ind) return false;
 		}
