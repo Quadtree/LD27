@@ -14,8 +14,8 @@ public class Crash1 extends NewsStory {
 
 		subheadline = rStr(new String[]{
 				"Head of Space Program: " + rStr(new String[]{
-						"It wasn't my fault.",
-						"Screw this, I'm going home."
+						"It wasn't my fault",
+						"Screw this, I'm going home"
 				})
 		});
 
