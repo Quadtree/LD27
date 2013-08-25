@@ -27,7 +27,7 @@ public class TitleScreen extends GameState {
 
 		if(launchStatus == 180) addMessage("1st stage running steady...", Speaker.GREEN);
 
-		if(launchStatus == 240) addMessage("Blastoff!", Speaker.RED);
+		if(launchStatus == 240){ addMessage("Blastoff!", Speaker.RED); Assets.launchSound.play(); }
 
 		if(launchStatus == 340) addMessage("Rocket has cleared\nthe tower.", Speaker.GREEN);
 

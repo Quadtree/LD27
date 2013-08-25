@@ -90,6 +90,8 @@ public class Lander extends Actor {
 			state.addMessage("Oh no!", Speaker.RED);
 			state.addMessage("I knew this would happen!", Speaker.GREEN);
 			state.addMessage("I think we did what we could...", Speaker.BLUE);
+
+			Assets.explosionSound.play();
 		}
 
 		if(!destroyed){

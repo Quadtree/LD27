@@ -3,6 +3,7 @@ package com.ironalloygames.flameout;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -40,6 +41,10 @@ public class Assets {
 	public static Texture starfield;
 
 	public static Sprite fragment;
+
+	public static Sound launchSound;
+
+	public static Sound explosionSound;
 
 	public static void load(){
 		atlas = new TextureAtlas(Gdx.files.internal("atlas.atlas"));
@@ -84,7 +89,8 @@ public class Assets {
 		borderedLarge = new BitmapFont(Gdx.files.internal("large-bordered.fnt"), Gdx.files.internal("large-bordered_00.png"), false);
 		borderedSmall = new BitmapFont(Gdx.files.internal("small-bordered.fnt"), Gdx.files.internal("small-bordered_00.png"), false);
 
-
+		launchSound = Gdx.audio.newSound(Gdx.files.internal("launch.ogg"));
+		explosionSound = Gdx.audio.newSound(Gdx.files.internal("explosion.wav"));
 
 		System.out.println("Load done");
 	}
