@@ -38,6 +38,12 @@ public class CruiseScreen extends GameState {
 	}
 
 	@Override
+	public GameState created() {
+		FlameoutGame.game.setMusic(Assets.spaceMusic, 0.5f);
+		return super.created();
+	}
+
+	@Override
 	public void render() {
 		batch.setProjectionMatrix(cam.combined);
 		batch.begin();

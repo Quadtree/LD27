@@ -19,6 +19,7 @@ public class DescentScreen extends GameState {
 	@Override
 	public GameState created() {
 		sp = Assets.landerEngineOff.get(0);
+		FlameoutGame.game.setMusic(Assets.spaceMusic, 0.5f);
 		return super.created();
 	}
 

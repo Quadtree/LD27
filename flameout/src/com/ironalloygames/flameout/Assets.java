@@ -3,6 +3,7 @@ package com.ironalloygames.flameout;
 import java.util.ArrayList;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -48,6 +49,10 @@ public class Assets {
 
 	public static Sprite landerSpinClockwise;
 	public static Sprite landerSpinCounterclockwise;
+
+	public static Music launchMusic;
+	public static Music spaceMusic;
+	public static Music newsMusic;
 
 	public static void load(){
 		atlas = new TextureAtlas(Gdx.files.internal("atlas.atlas"));
@@ -97,6 +102,10 @@ public class Assets {
 
 		landerSpinClockwise = atlas.createSprite("lander_spin_clockwise");
 		landerSpinCounterclockwise = atlas.createSprite("lander_spin_counterclockwise");
+
+		launchMusic = Gdx.audio.newMusic(Gdx.files.internal("launchMusic.ogg"));
+		spaceMusic = Gdx.audio.newMusic(Gdx.files.internal("space.ogg"));
+		newsMusic = Gdx.audio.newMusic(Gdx.files.internal("news.ogg"));
 
 		System.out.println("Load done");
 	}

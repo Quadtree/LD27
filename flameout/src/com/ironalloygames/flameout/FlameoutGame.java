@@ -2,6 +2,7 @@ package com.ironalloygames.flameout;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL10;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -88,6 +89,8 @@ public class FlameoutGame implements ApplicationListener {
 			msElapsed += 16;
 			currentGameState.update();
 		}
+
+		if(curMusic != null && !curMusic.isPlaying()) curMusic.play();
 	}
 
 	@Override
@@ -96,5 +99,21 @@ public class FlameoutGame implements ApplicationListener {
 
 	@Override
 	public void resume() {
+	}
+
+	Music curMusic = null;
+
+	public void setMusic(Music m, float vol){
+		if(curMusic == m) return;
+
+		if(curMusic != null){
+			curMusic.stop();
+		}
+
+		curMusic = m;
+
+		curMusic.setLooping(true);
+		curMusic.play();
+		curMusic.setVolume(vol);
 	}
 }

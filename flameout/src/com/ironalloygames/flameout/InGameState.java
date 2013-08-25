@@ -119,6 +119,8 @@ public class InGameState extends GameState implements ContactListener {
 
 		lander.thrusterPower = new Vector2(0, 0.5f);
 
+		FlameoutGame.game.setMusic(Assets.spaceMusic, 0.5f);
+
 		return super.created();
 	}
 

@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.MathUtils;
+import com.ironalloygames.flameout.Assets;
 import com.ironalloygames.flameout.FlameoutGame;
 import com.ironalloygames.flameout.GameState;
 import com.ironalloygames.flameout.InGameState;
@@ -83,6 +84,8 @@ public class NewsState extends GameState {
 		newspaperName = "The " + rStr(new String[]{"Daily", "Weekly", "Valiant", "Worldwide"}) + " " + rStr(new String[]{"Herald", "Devastator", "Truthifier", "Chronicle", "Surprise", "Ambush"});
 
 		System.out.println("Newspaper: " + leadingStory + " " + secondStory);
+
+		FlameoutGame.game.setMusic(Assets.newsMusic, 0.7f);
 	}
 
 	NewsStory leadingStory;
