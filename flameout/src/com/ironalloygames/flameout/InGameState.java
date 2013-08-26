@@ -388,7 +388,7 @@ public class InGameState extends GameState implements ContactListener {
 						"\nShift + Thrust Key.............Minor Thrust Change" +
 						"\nX..............................Stop All Thrust" +
 						"\nEnter..........................End Turn" +
-						"\nF1.............................View This Screen" +
+						"\nH..............................View This Screen" +
 						"\n\nPress any Key to Continue",
 						-750 / 2 + 15, -550 / 2 + 350 - 15, 720);
 	}
@@ -422,7 +422,7 @@ public class InGameState extends GameState implements ContactListener {
 			return super.keyDown(keycode);
 		}
 
-		if(keycode == Keys.F1){
+		if(keycode == Keys.H || keycode == Keys.F1){
 			helpScreenVisible = true;
 		}
 
